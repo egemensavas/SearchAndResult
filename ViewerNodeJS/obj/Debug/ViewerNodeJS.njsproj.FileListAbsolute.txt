@@ -1,0 +1,3 @@
+C:\Users\egeme\source\repos\SearchAndResult\ViewerNodeJS\obj\Debug\ViewerNodeJS.njsprojAssemblyReference.cache
+C:\Users\egeme\source\repos\SearchAndResult\ViewerNodeJS\obj\Debug\ViewerNodeJS.njsproj.CoreCompileInputs.cache
+C:\Users\egeme\source\repos\SearchAndResult\ViewerNodeJS\bin\Microsoft.NodejsTools.WebRole.dll
