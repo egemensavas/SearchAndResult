@@ -1,0 +1,18 @@
+<h1 id="tableLabel">Viewer Sahibinden</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+<p *ngIf="!viewerdata"><em>Loading...</em></p>
+
+<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="viewerdata">
+  <thead>
+    <tr>
+      <th>Date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>{{ viewerdata }}</td>
+    </tr>
+  </tbody>
+</table>
