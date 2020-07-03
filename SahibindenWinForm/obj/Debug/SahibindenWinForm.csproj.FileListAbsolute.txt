@@ -1,9 +1,9 @@
 C:\Users\egeme\source\repos\SearchAndResult\SahibindenWinForm\bin\Debug\SahibindenWinForm.exe.config
 C:\Users\egeme\source\repos\SearchAndResult\SahibindenWinForm\bin\Debug\SahibindenWinForm.exe
 C:\Users\egeme\source\repos\SearchAndResult\SahibindenWinForm\bin\Debug\SahibindenWinForm.pdb
-C:\Users\egeme\source\repos\SearchAndResult\SahibindenWinForm\obj\Debug\SahibindenWinForm.csprojAssemblyReference.cache
 C:\Users\egeme\source\repos\SearchAndResult\SahibindenWinForm\obj\Debug\SahibindenWinForm.Properties.Resources.resources
 C:\Users\egeme\source\repos\SearchAndResult\SahibindenWinForm\obj\Debug\SahibindenWinForm.csproj.GenerateResource.cache
 C:\Users\egeme\source\repos\SearchAndResult\SahibindenWinForm\obj\Debug\SahibindenWinForm.exe
 C:\Users\egeme\source\repos\SearchAndResult\SahibindenWinForm\obj\Debug\SahibindenWinForm.pdb
 C:\Users\egeme\source\repos\SearchAndResult\SahibindenWinForm\obj\Debug\SahibindenWinForm.MainForm.resources
+C:\Users\egeme\source\repos\SearchAndResult\SahibindenWinForm\obj\Debug\SahibindenWinForm.csproj.CoreCompileInputs.cache

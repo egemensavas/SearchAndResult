@@ -1,0 +1,2 @@
+C:\Users\egeme\source\repos\SearchAndResult\Gray Matter Common Library\obj\Debug\Gray Matter Common Library.csprojAssemblyReference.cache
+C:\Users\egeme\source\repos\SearchAndResult\Gray Matter Common Library\obj\Debug\Gray Matter Common Library.csproj.CoreCompileInputs.cache
