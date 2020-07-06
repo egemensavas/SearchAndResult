@@ -6,14 +6,21 @@ import { HttpClient } from '@angular/common/http';
   templateUrl: './ViewerSHB.component.html'
 })
 export class ViewerSHBComponent {
-  public viewerdata: string;
+  public Adverts: AdvertModel[];
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
-    http.get<string>(baseUrl + 'API').subscribe(result => {
-      this.viewerdata = result;
+    http.get<AdvertModel[]>(baseUrl + 'API').subscribe(result => {
+      this.Adverts = result;
       console.log(result);
     }, error => console.error(error));
   }
 }
 
-
+interface AdvertModel {
+  AdvertLink: string;
+  Description: string;
+  ThumbnailLink: string;
+  Location: string;
+  AdvertDate: string;
+  Price: string;
+}
