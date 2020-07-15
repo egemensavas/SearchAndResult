@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="7c8d6041b7ee4d649e24ba512669c96c" Name="Diagram1">
+        <EntityTypeShape EntityType="SAHIBINDENDBModel.TABLE_ADVERT" Width="1.5" PointX="3" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SAHIBINDENDBModel.TABLE_SEARCH_DETAIL" Width="1.5" PointX="6" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SAHIBINDENDBModel.TABLE_SEARCH_MASTER" Width="1.5" PointX="0.75" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SAHIBINDENDBModel.TABLE_SEARCHABLE_TYPE" Width="1.5" PointX="3.75" PointY="0.75" IsExpanded="true" />
+        <AssociationConnector Association="SAHIBINDENDBModel.FK_TABLE_ADVERT_TABLE_SEARCH_MASTER" ManuallyRouted="false" />
+        <AssociationConnector Association="SAHIBINDENDBModel.FK_TABLE_SEARCH_DETAIL_TABLE_SEARCH_MASTER" ManuallyRouted="false" />
+        <AssociationConnector Association="SAHIBINDENDBModel.FK_TABLE_SEARCH_DETAIL_TABLE_SEARCHABLE_TYPE" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="SAHIBINDENDBModel.VIEW_NOTIFICATION" Width="1.5" PointX="0.75" PointY="0.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

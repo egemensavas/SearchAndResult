@@ -7,12 +7,19 @@ namespace SahibindenWinForm.Models
     {
         public class SearchCriteria
         {
-            public string DivisionStart { get; set; }
-            public string DivisionEnd { get; set; }
             public string SearchStart { get; set; }
             public string SearchEnd { get; set; }
-            public int MaxIndex { get; set; }
-            public string Divider { get; set; }
+        }
+
+        public class DivisionCriteria
+        {
+            public string DivisionStart { get; set; }
+            public string DivisionEnd { get; set; }
+        }
+
+        public class SplitStringCriteria
+        {
+            public string SplitString { get; set; }
         }
 
         public class XMLReplace
@@ -42,6 +49,9 @@ namespace SahibindenWinForm.Models
             public string ThumbnailLink { get; set; }
             public DateTime AdvertDate { get; set; }
             public int SearchMasterID { get; set; }
+            public int Size { get; set; }
+            public string Room { get; set; }
+            public string Heating { get; set; }
 
         }
     }

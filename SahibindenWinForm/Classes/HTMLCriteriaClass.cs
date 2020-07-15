@@ -7,11 +7,15 @@ namespace SahibindenWinForm.Classes
         #region Properties
         public SearchCriteria PriceCriteria { get; set; }
         public SearchCriteria EmptyCriteria { get; set; }
-        public SearchCriteria AdvertLinkCriteria { get; set; }
+        public SearchCriteria AdvertIDCriteria { get; set; }
         public SearchCriteria DescriptionCriteria { get; set; }
         public SearchCriteria ThumbnailCriteria { get; set; }
         public SearchCriteria LocationCriteria { get; set; }
         public SearchCriteria DateCriteria { get; set; }
+        public DivisionCriteria ResultAttributeDivisionCriteria { get; set; }
+        public DivisionCriteria AdvertTrimCriteria { get; set; }
+        public DivisionCriteria AttributeTrimCriteria { get; set; }
+        public DivisionCriteria AdvertSplitDivisionCriteria { get; set; }
         #endregion
 
         #region Constructor
@@ -24,61 +28,60 @@ namespace SahibindenWinForm.Classes
         #region Helpers
         void XMLSearchCriteriaDefinition()
         {
+            AdvertSplitDivisionCriteria = new DivisionCriteria()
+            {
+                DivisionStart = "<tr data-id=\"",
+                DivisionEnd = "</tr>"
+            };
+            AdvertTrimCriteria = new DivisionCriteria()
+            {
+                DivisionStart = "<tbody class=\"searchResultsRowClass\">",
+                DivisionEnd = "</tbody>"
+            };
+            AttributeTrimCriteria = new DivisionCriteria()
+            {
+                DivisionStart = "</td>\n            ",
+                DivisionEnd = "<td class=\"searchResultsPriceValue\">"
+            };
             PriceCriteria = new SearchCriteria()
             {
-                DivisionStart = "<td class=\"searchResultsPriceValue\">",
-                DivisionEnd = "<td class=\"searchResultsDateValue\">",
-                SearchStart = "<div> ",
-                SearchEnd = "</div>",
-                MaxIndex = 20
+                SearchStart = "<td class=\"searchResultsPriceValue\">\n                        <div> ",
+                SearchEnd = "</div>"
             };
-            AdvertLinkCriteria = new SearchCriteria()
+            AdvertIDCriteria = new SearchCriteria()
             {
-                DivisionStart = "<a class=\" classifiedTitle\"",
-                DivisionEnd = "</a>",
-                SearchStart = "href=\"",
-                SearchEnd = "/detay\">",
-                MaxIndex = 20
+                SearchStart = "<tr data-id=\"",
+                SearchEnd = "\"\n"
             };
             DescriptionCriteria = new SearchCriteria()
             {
-                DivisionStart = "<a class=\" classifiedTitle\"",
-                DivisionEnd = "</td>",
                 SearchStart = "/detay\">\n    ",
-                SearchEnd = "</a>",
-                MaxIndex = 20
+                SearchEnd = "</a>"
             };
             ThumbnailCriteria = new SearchCriteria()
             {
-                DivisionStart = "<td class=\"searchResultsLargeThumbnail\">",
-                DivisionEnd = "</td>",
-                SearchStart = "<img class=\"\"\n        \n        src=\"",
-                SearchEnd = "\"\n",
-                MaxIndex = 20
+                SearchStart = " src=\"",
+                SearchEnd = "\"\n"
             };
             LocationCriteria = new SearchCriteria()
             {
-                DivisionStart = "<td class=\"searchResultsLocationValue\">",
-                DivisionEnd = "<td class=\"ignore-me\">",
                 SearchStart = "<td class=\"searchResultsLocationValue\">\n                        ",
-                SearchEnd = "</td>",
-                MaxIndex = 20
+                SearchEnd = "</td>"
             };
             DateCriteria = new SearchCriteria()
             {
-                DivisionStart = "<td class=\"searchResultsDateValue\">",
-                DivisionEnd = "<td class=\"searchResultsLocationValue\">",
                 SearchStart = "<span>",
-                SearchEnd = "</span>\n                    </td>",
-                MaxIndex = 20
+                SearchEnd = "</span>\n                    </td>"
             };
-            EmptyCriteria = new SearchCriteria()
+            DateCriteria = new SearchCriteria()
             {
-                DivisionStart = "<tbody class=\"searchResultsRowClass\">",
-                DivisionEnd = "</table>",
-                SearchStart = "<body ",
-                SearchEnd = "</body>",
-                MaxIndex = 1
+                SearchStart = "<span>",
+                SearchEnd = "</span>\n                    </td>"
+            };
+            ResultAttributeDivisionCriteria = new DivisionCriteria()
+            {
+                DivisionStart = "<td class=\"searchResultsAttributeValue\">\n",
+                DivisionEnd = "</td>"
             };
         }
         #endregion

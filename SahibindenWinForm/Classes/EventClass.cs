@@ -37,68 +37,46 @@ namespace SahibindenWinForm.Classes
         #region Form Control Methods
         public void ButtonClickEvent(object sender, EventArgs e)
         {
-            bool test = true;
+            bool test = false;
             string siteContent = string.Empty;
-            int searchMasterID = 1;
-            int latestAdvertID = Convert.ToInt32(SQLClass.GetSingleCellDataComplex("SELECT ISNULL(MAX(AdvertID),0) FROM TABLE_ADVERT (NOLOCK)"));
-            int advertID;
-            bool contiuneOnNextPage = true;
-            string filePath = AppStartUpPath + "\\HTML\\tobedeleted.html";
-            int currentPage = 1;
-            string siteAddress;
-            while (contiuneOnNextPage)
+            DataTable dtSearchMaster = SQLClass.GetDataTable("SELECT ID, ADVERTTYPEID FROM TABLE_SEARCH_MASTER (NOLOCK)");
+            int searchMasterID;
+            foreach (DataRow item in dtSearchMaster.Rows)
             {
-                siteAddress = SQLClass.GetSingleCellDataComplex("SP_GETSEARCHURL " + searchMasterID.ToString() + ", " + currentPage.ToString());
-                if (File.Exists(filePath))
-                    siteContent = File.ReadAllText(filePath);
-                else
+                searchMasterID = Convert.ToInt32(item["ID"]);
+                int advertTypeID = Convert.ToInt32(item["ADVERTTYPEID"]);
+                bool contiuneOnNextPage = true;
+                string filePath = AppStartUpPath + "\\HTML\\tobedeleted.html";
+                int currentPage = 1;
+                string siteAddress;
+                while (contiuneOnNextPage)
                 {
-                    using (WebClient client = new WebClient())
+                    siteAddress = SQLClass.GetSingleCellDataComplex("SP_GETSEARCHURL " + searchMasterID.ToString() + ", " + currentPage.ToString());
+                    if (File.Exists(filePath))
+                        siteContent = File.ReadAllText(filePath);
+                    else
                     {
-                        client.Headers.Add("user-agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36");
-                        siteContent = client.DownloadString(siteAddress);
-                    }
-                    File.WriteAllText(filePath, siteContent);
-                }
-                if (siteContent.Contains("too-many-requests"))
-                    throw new Exception ("Yakalandık :)");
-                List<string> PriceList = GeneralClass.ParsingHelperArray(HTMLCriteriaClass.EmptyCriteria, HTMLCriteriaClass.PriceCriteria, siteContent);
-                List<string> AdvertIDList = GeneralClass.ParsingHelperArray(HTMLCriteriaClass.EmptyCriteria, HTMLCriteriaClass.AdvertLinkCriteria, siteContent);
-                List<string> DescriptionList = GeneralClass.ParsingHelperArray(HTMLCriteriaClass.EmptyCriteria, HTMLCriteriaClass.DescriptionCriteria, siteContent);
-                List<string> ThumbnailList = GeneralClass.ParsingHelperArray(HTMLCriteriaClass.EmptyCriteria, HTMLCriteriaClass.ThumbnailCriteria, siteContent);
-                List<string> LocationList = GeneralClass.ParsingHelperArray(HTMLCriteriaClass.EmptyCriteria, HTMLCriteriaClass.LocationCriteria, siteContent);
-                List<string> DateList = GeneralClass.ParsingHelperArray(HTMLCriteriaClass.EmptyCriteria, HTMLCriteriaClass.DateCriteria, siteContent);
-
-                int RecordCount = PriceList.Count;
-                List<ResultModel> ResultModelList = new List<ResultModel>();
-
-                for (int i = 0; i < RecordCount; i++)
-                {
-                    advertID = Convert.ToInt32(AdvertIDList[i].Substring(AdvertIDList[i].LastIndexOf("-") + 1));
-                    if (advertID > latestAdvertID)
-                    {
-                        ResultModel Addition = new ResultModel
+                        using (WebClient client = new WebClient())
                         {
-                            AdvertDate = GeneralClass.ConvertToDateTime(DateList[i].Replace("</span>\n                        <br/>\n                        <span>", " ")),
-                            Description = DescriptionList[i],
-                            AdvertID = advertID,
-                            Location = LocationList[i].Replace("<br/>", " - "),
-                            Price = Convert.ToInt32(PriceList[i].Replace(".", "").Replace(" TL", "")),
-                            SearchMasterID = searchMasterID,
-                            ThumbnailLink = ThumbnailList[i]
-                        };
-                        ResultModelList.Add(Addition);
+                            client.Headers.Add("user-agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36");
+                            siteContent = client.DownloadString(siteAddress);
+                        }
+                        File.WriteAllText(filePath, siteContent);
                     }
+                    if (siteContent.Contains("too-many-requests"))
+                        throw new Exception("Yakalandık :)");
+                    string trimmedSiteContent = GeneralClass.TrimHelper(HTMLCriteriaClass.AdvertTrimCriteria, siteContent);
+                    string cleanedSiteContent = WebUtility.HtmlDecode(GeneralClass.ReplaceNonAnsiChars(GeneralClass.CleanData(trimmedSiteContent)));
+                    List<string> splittedInput = GeneralClass.SplitDivisionHelper(HTMLCriteriaClass.AdvertSplitDivisionCriteria, cleanedSiteContent, false);
+                    List<ResultModel> ResultModelList = GeneralClass.PopulateResultModel(splittedInput, advertTypeID, searchMasterID);
+                    using (DataTable dataTable = GeneralClass.ConvertListToDataTable(ResultModelList))
+                        SQLClass.BulkInsert(dataTable, "TABLE_ADVERT");
+                    if (!test)
+                        File.Delete(filePath);
+                    if (splittedInput.Count < 20)
+                        contiuneOnNextPage = false;
+                    currentPage++;
                 }
-                using (DataTable dataTable = GeneralClass.ConvertListToDataTable(ResultModelList))
-                {
-                    SQLClass.BulkInsert(dataTable, "TABLE_ADVERT");
-                }
-                if (!test)
-                    File.Delete(filePath);
-                if (ResultModelList.Count < 20)
-                    contiuneOnNextPage = false;
-                currentPage++;
             }
         }
         #endregion

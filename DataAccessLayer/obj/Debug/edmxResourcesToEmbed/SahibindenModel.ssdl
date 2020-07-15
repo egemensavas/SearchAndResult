@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SAHIBINDENDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="TABLE_ADVERT">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SearchMasterID" Type="int" Nullable="false" />
+    <Property Name="CreateDate" Type="date" Nullable="false" />
+    <Property Name="IsSeen" Type="bit" Nullable="false" />
+    <Property Name="AdvertID" Type="int" Nullable="false" />
+    <Property Name="Description" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="ThumbnailLink" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="Location" Type="nvarchar" MaxLength="40" Nullable="false" />
+    <Property Name="AdvertDate" Type="date" Nullable="false" />
+    <Property Name="Price" Type="int" Nullable="false" />
+    <Property Name="Size" Type="int" />
+    <Property Name="Room" Type="nvarchar" MaxLength="40" />
+    <Property Name="Heating" Type="nvarchar" MaxLength="40" />
+  </EntityType>
+  <EntityType Name="TABLE_SEARCH_DETAIL">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SearchMasterID" Type="int" Nullable="false" />
+    <Property Name="SearchableTypeID" Type="int" Nullable="false" />
+    <Property Name="SearchableValue" Type="nvarchar" MaxLength="200" Nullable="false" />
+  </EntityType>
+  <EntityType Name="TABLE_SEARCH_MASTER">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Description" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="Notes" Type="nvarchar" MaxLength="200" Nullable="false" />
+  </EntityType>
+  <EntityType Name="TABLE_SEARCHABLE_TYPE">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Description" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'SAHIBINDENDB.dbo.VIEW_NOTIFICATION' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="VIEW_NOTIFICATION">
+    <Key>
+      <PropertyRef Name="NotificationMessage" />
+      <PropertyRef Name="SearchMasterID" />
+    </Key>
+    <Property Name="NotificationMessage" Type="varchar" MaxLength="22" Nullable="false" />
+    <Property Name="SearchMasterID" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_TABLE_SEARCH_DETAIL_TABLE_SEARCH_MASTER">
+    <End Role="TABLE_SEARCH_MASTER" Type="Self.TABLE_SEARCH_MASTER" Multiplicity="1" />
+    <End Role="TABLE_SEARCH_DETAIL" Type="Self.TABLE_SEARCH_DETAIL" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TABLE_SEARCH_MASTER">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="TABLE_SEARCH_DETAIL">
+        <PropertyRef Name="SearchMasterID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TABLE_SEARCH_DETAIL_TABLE_SEARCHABLE_TYPE">
+    <End Role="TABLE_SEARCHABLE_TYPE" Type="Self.TABLE_SEARCHABLE_TYPE" Multiplicity="1" />
+    <End Role="TABLE_SEARCH_DETAIL" Type="Self.TABLE_SEARCH_DETAIL" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TABLE_SEARCHABLE_TYPE">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="TABLE_SEARCH_DETAIL">
+        <PropertyRef Name="SearchableTypeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="SP_GETSEARCHURL" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="ID" Type="int" Mode="In" />
+    <Parameter Name="PAGE" Type="int" Mode="In" />
+  </Function>
+  <EntityContainer Name="SAHIBINDENDBModelStoreContainer">
+    <EntitySet Name="TABLE_ADVERT" EntityType="Self.TABLE_ADVERT" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TABLE_SEARCH_DETAIL" EntityType="Self.TABLE_SEARCH_DETAIL" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TABLE_SEARCH_MASTER" EntityType="Self.TABLE_SEARCH_MASTER" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TABLE_SEARCHABLE_TYPE" EntityType="Self.TABLE_SEARCHABLE_TYPE" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="VIEW_NOTIFICATION" EntityType="Self.VIEW_NOTIFICATION" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [VIEW_NOTIFICATION].[NotificationMessage] AS [NotificationMessage], 
+    [VIEW_NOTIFICATION].[SearchMasterID] AS [SearchMasterID]
+    FROM [dbo].[VIEW_NOTIFICATION] AS [VIEW_NOTIFICATION]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK_TABLE_SEARCH_DETAIL_TABLE_SEARCH_MASTER" Association="Self.FK_TABLE_SEARCH_DETAIL_TABLE_SEARCH_MASTER">
+      <End Role="TABLE_SEARCH_MASTER" EntitySet="TABLE_SEARCH_MASTER" />
+      <End Role="TABLE_SEARCH_DETAIL" EntitySet="TABLE_SEARCH_DETAIL" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TABLE_SEARCH_DETAIL_TABLE_SEARCHABLE_TYPE" Association="Self.FK_TABLE_SEARCH_DETAIL_TABLE_SEARCHABLE_TYPE">
+      <End Role="TABLE_SEARCHABLE_TYPE" EntitySet="TABLE_SEARCHABLE_TYPE" />
+      <End Role="TABLE_SEARCH_DETAIL" EntitySet="TABLE_SEARCH_DETAIL" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

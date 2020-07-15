@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="SAHIBINDENDBModelStoreContainer" CdmEntityContainer="SAHIBINDENDBEntities">
+    <EntitySetMapping Name="TABLE_ADVERT">
+      <EntityTypeMapping TypeName="SAHIBINDENDBModel.TABLE_ADVERT">
+        <MappingFragment StoreEntitySet="TABLE_ADVERT">
+          <ScalarProperty Name="Heating" ColumnName="Heating" />
+          <ScalarProperty Name="Room" ColumnName="Room" />
+          <ScalarProperty Name="Size" ColumnName="Size" />
+          <ScalarProperty Name="IsSeen" ColumnName="IsSeen" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="AdvertID" ColumnName="AdvertID" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="ThumbnailLink" ColumnName="ThumbnailLink" />
+          <ScalarProperty Name="Location" ColumnName="Location" />
+          <ScalarProperty Name="AdvertDate" ColumnName="AdvertDate" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="SearchMasterID" ColumnName="SearchMasterID" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TABLE_SEARCH_DETAIL">
+      <EntityTypeMapping TypeName="SAHIBINDENDBModel.TABLE_SEARCH_DETAIL">
+        <MappingFragment StoreEntitySet="TABLE_SEARCH_DETAIL">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="SearchMasterID" ColumnName="SearchMasterID" />
+          <ScalarProperty Name="SearchableTypeID" ColumnName="SearchableTypeID" />
+          <ScalarProperty Name="SearchableValue" ColumnName="SearchableValue" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TABLE_SEARCH_MASTER">
+      <EntityTypeMapping TypeName="SAHIBINDENDBModel.TABLE_SEARCH_MASTER">
+        <MappingFragment StoreEntitySet="TABLE_SEARCH_MASTER">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Notes" ColumnName="Notes" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TABLE_SEARCHABLE_TYPE">
+      <EntityTypeMapping TypeName="SAHIBINDENDBModel.TABLE_SEARCHABLE_TYPE">
+        <MappingFragment StoreEntitySet="TABLE_SEARCHABLE_TYPE">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="SP_GETSEARCHURL" FunctionName="SAHIBINDENDBModel.Store.SP_GETSEARCHURL" />
+    <EntitySetMapping Name="VIEW_NOTIFICATION">
+      <EntityTypeMapping TypeName="SAHIBINDENDBModel.VIEW_NOTIFICATION">
+        <MappingFragment StoreEntitySet="VIEW_NOTIFICATION">
+          <ScalarProperty Name="SearchMasterID" ColumnName="SearchMasterID" />
+          <ScalarProperty Name="NotificationMessage" ColumnName="NotificationMessage" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

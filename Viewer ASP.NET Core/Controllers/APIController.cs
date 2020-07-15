@@ -1,7 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Security.Cryptography.Xml;
 using System.Threading.Tasks;
+using System.Web;
+using DataAccessLayer;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -10,40 +17,63 @@ namespace Viewer_ASP.NET_Core.Controllers
     public class APIController : Controller
     {
         [HttpGet]
-        public IEnumerable<AdvertModel> Index()
+        public IEnumerable<AdvertModel> FillDataToScreen([FromQuery] int SearchMasterID)
         {
             List<AdvertModel> result_ = new List<AdvertModel>();
-            AdvertModel a = new AdvertModel
+            GeneralClass cls = new GeneralClass();
+            var a = cls.GetAdvertData(SearchMasterID);
+            foreach (var b in a)
             {
-                AdvertLink = "https://www.sahibinden.com/ilan/837317934/detay",
-                Description = "Canon eos 6d mark 2",
-                ThumbnailLink = "https://i0.shbdn.com/photos/00/18/86/lthmb_825001886frl.jpg",
-                Location = "Mersin - Akdeniz",
-                AdvertDate = "10.06.2018",
-                Price = "180 TL"
-            };
-            result_.Add(a);
-            AdvertModel b = new AdvertModel
-            {
-                AdvertLink = "https://www.sahibinden.com/ilan/821136976/detay",
-                Description = "Canon EOS 6D Mark II Body | sıfır kutusunda 2 garantili",
-                ThumbnailLink = "https://i0.shbdn.com/photos/13/69/76/lthmb_8211369764g8.jpg",
-                Location = "İstanbul - Fatih",
-                AdvertDate = "10.06.2018",
-                Price = "180 TL"
-            };
-            result_.Add(b);
-            AdvertModel c = new AdvertModel
-            {
-                AdvertLink = "https://www.sahibinden.com/ilan/821136976/detay",
-                Description = "Canon EOS 6D Mark II Body | sıfır kutusunda 2 garantili",
-                ThumbnailLink = "https://i0.shbdn.com/photos/13/69/76/lthmb_8211369764g8.jpg",
-                Location = "İstanbul - Fatih",
-                AdvertDate = "10.06.2018",
-                Price = "180 TL"
-            };
-            result_.Add(c);
+                AdvertModel x = new AdvertModel
+                {
+                    AdvertLink = "https://www.sahibinden.com/ilan/" + b.AdvertID.ToString() + "/detay",
+                    Description = b.Description,
+                    ThumbnailLink = b.ThumbnailLink,
+                    Location = b.Location,
+                    AdvertDate = b.AdvertDate.ToString(),
+                    Price = b.Price.ToString() + " TL"
+                };
+                result_.Add(x);
+            }
             return result_;
+        }
+
+        [HttpGet]
+        public void SendNotification([FromQuery] int SearchMasterID)
+        {
+            GeneralClass cls = new GeneralClass();
+            string Message = cls.NotificationMessage(SearchMasterID);
+            if (!string.IsNullOrEmpty(Message))
+            {
+                OneSignalCall(Message);
+                cls.UpdateSeen(SearchMasterID);
+            }
+        }
+
+        public void OneSignalCall(string Message)
+        {
+            string URL = "https://onesignal.com/api/v1/notifications";
+            string DATA = @"{
+                                ""app_id"": ""708d286a-e547-4c5c-8575-5cc801c4096b"",
+                                ""included_segments"": [""All""],
+                                ""contents"": {""en"": """ + HttpUtility.UrlDecode(Message) + @"""}
+                            }";
+
+            var request = (HttpWebRequest)WebRequest.Create(URL);
+
+            request.Method = "POST";
+            request.ContentType = "application/json";
+            request.Headers.Add("Authorization", "Basic OThhYzIxM2YtMmZjNi00N2Y0LTg4NTMtZjYzNWYxOWE2MmY3");
+            using (var streamWriter = new StreamWriter(request.GetRequestStream()))
+            {
+                string json = DATA;
+
+                streamWriter.Write(json);
+            }
+
+            var httpResponse = (HttpWebResponse)request.GetResponse();
+            using var streamReader = new StreamReader(httpResponse.GetResponseStream());
+            var result_ = streamReader.ReadToEnd();
         }
     }
 }

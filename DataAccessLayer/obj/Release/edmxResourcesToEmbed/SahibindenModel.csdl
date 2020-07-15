@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SAHIBINDENDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="TABLE_ADVERT">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="AdvertID" Type="Int32" Nullable="false" />
+    <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ThumbnailLink" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Location" Type="String" MaxLength="40" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="AdvertDate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="SearchMasterID" Type="Int32" Nullable="false" />
+    <Property Name="Price" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="TABLE_SEARCH_MASTER" Relationship="Self.FK_TABLE_ADVERT_TABLE_SEARCH_MASTER" FromRole="TABLE_ADVERT" ToRole="TABLE_SEARCH_MASTER" />
+    <Property Name="IsSeen" Type="Boolean" Nullable="false" />
+    <Property Name="Size" Type="Int32" />
+    <Property Name="Room" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="Heating" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="TABLE_SEARCH_DETAIL">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SearchMasterID" Type="Int32" Nullable="false" />
+    <Property Name="SearchableTypeID" Type="Int32" Nullable="false" />
+    <Property Name="SearchableValue" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="TABLE_SEARCH_MASTER" Relationship="Self.FK_TABLE_SEARCH_DETAIL_TABLE_SEARCH_MASTER" FromRole="TABLE_SEARCH_DETAIL" ToRole="TABLE_SEARCH_MASTER" />
+    <NavigationProperty Name="TABLE_SEARCHABLE_TYPE" Relationship="Self.FK_TABLE_SEARCH_DETAIL_TABLE_SEARCHABLE_TYPE" FromRole="TABLE_SEARCH_DETAIL" ToRole="TABLE_SEARCHABLE_TYPE" />
+  </EntityType>
+  <EntityType Name="TABLE_SEARCH_MASTER">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Notes" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="TABLE_ADVERT" Relationship="Self.FK_TABLE_ADVERT_TABLE_SEARCH_MASTER" FromRole="TABLE_SEARCH_MASTER" ToRole="TABLE_ADVERT" />
+    <NavigationProperty Name="TABLE_SEARCH_DETAIL" Relationship="Self.FK_TABLE_SEARCH_DETAIL_TABLE_SEARCH_MASTER" FromRole="TABLE_SEARCH_MASTER" ToRole="TABLE_SEARCH_DETAIL" />
+  </EntityType>
+  <EntityType Name="TABLE_SEARCHABLE_TYPE">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="TABLE_SEARCH_DETAIL" Relationship="Self.FK_TABLE_SEARCH_DETAIL_TABLE_SEARCHABLE_TYPE" FromRole="TABLE_SEARCHABLE_TYPE" ToRole="TABLE_SEARCH_DETAIL" />
+  </EntityType>
+  <Association Name="FK_TABLE_ADVERT_TABLE_SEARCH_MASTER">
+    <End Role="TABLE_SEARCH_MASTER" Type="Self.TABLE_SEARCH_MASTER" Multiplicity="1" />
+    <End Role="TABLE_ADVERT" Type="Self.TABLE_ADVERT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TABLE_SEARCH_MASTER">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="TABLE_ADVERT">
+        <PropertyRef Name="SearchMasterID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TABLE_SEARCH_DETAIL_TABLE_SEARCH_MASTER">
+    <End Role="TABLE_SEARCH_MASTER" Type="Self.TABLE_SEARCH_MASTER" Multiplicity="1" />
+    <End Role="TABLE_SEARCH_DETAIL" Type="Self.TABLE_SEARCH_DETAIL" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TABLE_SEARCH_MASTER">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="TABLE_SEARCH_DETAIL">
+        <PropertyRef Name="SearchMasterID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TABLE_SEARCH_DETAIL_TABLE_SEARCHABLE_TYPE">
+    <End Role="TABLE_SEARCHABLE_TYPE" Type="Self.TABLE_SEARCHABLE_TYPE" Multiplicity="1" />
+    <End Role="TABLE_SEARCH_DETAIL" Type="Self.TABLE_SEARCH_DETAIL" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TABLE_SEARCHABLE_TYPE">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="TABLE_SEARCH_DETAIL">
+        <PropertyRef Name="SearchableTypeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="SAHIBINDENDBEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="TABLE_ADVERT" EntityType="Self.TABLE_ADVERT" />
+    <EntitySet Name="TABLE_SEARCH_DETAIL" EntityType="Self.TABLE_SEARCH_DETAIL" />
+    <EntitySet Name="TABLE_SEARCH_MASTER" EntityType="Self.TABLE_SEARCH_MASTER" />
+    <EntitySet Name="TABLE_SEARCHABLE_TYPE" EntityType="Self.TABLE_SEARCHABLE_TYPE" />
+    <AssociationSet Name="FK_TABLE_ADVERT_TABLE_SEARCH_MASTER" Association="Self.FK_TABLE_ADVERT_TABLE_SEARCH_MASTER">
+      <End Role="TABLE_SEARCH_MASTER" EntitySet="TABLE_SEARCH_MASTER" />
+      <End Role="TABLE_ADVERT" EntitySet="TABLE_ADVERT" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TABLE_SEARCH_DETAIL_TABLE_SEARCH_MASTER" Association="Self.FK_TABLE_SEARCH_DETAIL_TABLE_SEARCH_MASTER">
+      <End Role="TABLE_SEARCH_MASTER" EntitySet="TABLE_SEARCH_MASTER" />
+      <End Role="TABLE_SEARCH_DETAIL" EntitySet="TABLE_SEARCH_DETAIL" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TABLE_SEARCH_DETAIL_TABLE_SEARCHABLE_TYPE" Association="Self.FK_TABLE_SEARCH_DETAIL_TABLE_SEARCHABLE_TYPE">
+      <End Role="TABLE_SEARCHABLE_TYPE" EntitySet="TABLE_SEARCHABLE_TYPE" />
+      <End Role="TABLE_SEARCH_DETAIL" EntitySet="TABLE_SEARCH_DETAIL" />
+    </AssociationSet>
+    <FunctionImport Name="SP_GETSEARCHURL" ReturnType="Collection(Int32)">
+      <Parameter Name="ID" Mode="In" Type="Int32" />
+      <Parameter Name="PAGE" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <EntitySet Name="VIEW_NOTIFICATION" EntityType="SAHIBINDENDBModel.VIEW_NOTIFICATION" />
+  </EntityContainer>
+  <EntityType Name="VIEW_NOTIFICATION">
+    <Key>
+      <PropertyRef Name="NotificationMessage" />
+      <PropertyRef Name="SearchMasterID" />
+    </Key>
+    <Property Name="NotificationMessage" Type="String" Nullable="false" MaxLength="22" FixedLength="false" Unicode="false" />
+    <Property Name="SearchMasterID" Type="Int32" Nullable="false" />
+  </EntityType>
+</Schema>

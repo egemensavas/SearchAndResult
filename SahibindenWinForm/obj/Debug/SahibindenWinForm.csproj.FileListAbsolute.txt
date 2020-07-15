@@ -7,3 +7,4 @@ C:\Users\egeme\source\repos\SearchAndResult\SahibindenWinForm\obj\Debug\Sahibind
 C:\Users\egeme\source\repos\SearchAndResult\SahibindenWinForm\obj\Debug\SahibindenWinForm.pdb
 C:\Users\egeme\source\repos\SearchAndResult\SahibindenWinForm\obj\Debug\SahibindenWinForm.MainForm.resources
 C:\Users\egeme\source\repos\SearchAndResult\SahibindenWinForm\obj\Debug\SahibindenWinForm.csproj.CoreCompileInputs.cache
+C:\Users\egeme\source\repos\SearchAndResult\SahibindenWinForm\obj\Debug\SahibindenWinForm.csprojAssemblyReference.cache

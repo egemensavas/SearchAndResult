@@ -19,10 +19,18 @@ namespace SahibindenWinForm
         #endregion
 
         #region Event Methods
-        private void button1_Click(object sender, EventArgs e)
+        private void Button1_Click(object sender, EventArgs e)
         {
             EventClass.ButtonClickEvent(sender, e);
         }
         #endregion
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            this.Visible = false;
+            EventClass.ButtonClickEvent(null, null);
+            MessageBox.Show("Done.");
+            Close();
+        }
     }
 }

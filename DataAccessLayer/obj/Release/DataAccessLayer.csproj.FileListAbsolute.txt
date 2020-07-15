@@ -1,0 +1,12 @@
+C:\Users\egeme\source\repos\SearchAndResult\DataAccessLayer\bin\Release\DataAccessLayer.dll.config
+C:\Users\egeme\source\repos\SearchAndResult\DataAccessLayer\bin\Release\DataAccessLayer.dll
+C:\Users\egeme\source\repos\SearchAndResult\DataAccessLayer\bin\Release\DataAccessLayer.pdb
+C:\Users\egeme\source\repos\SearchAndResult\DataAccessLayer\bin\Release\EntityFramework.dll
+C:\Users\egeme\source\repos\SearchAndResult\DataAccessLayer\bin\Release\EntityFramework.SqlServer.dll
+C:\Users\egeme\source\repos\SearchAndResult\DataAccessLayer\bin\Release\EntityFramework.xml
+C:\Users\egeme\source\repos\SearchAndResult\DataAccessLayer\bin\Release\EntityFramework.SqlServer.xml
+C:\Users\egeme\source\repos\SearchAndResult\DataAccessLayer\obj\Release\DataAccessLayer.csprojAssemblyReference.cache
+C:\Users\egeme\source\repos\SearchAndResult\DataAccessLayer\obj\Release\DataAccessLayer.csproj.CoreCompileInputs.cache
+C:\Users\egeme\source\repos\SearchAndResult\DataAccessLayer\obj\Release\DataAccessLayer.csproj.CopyComplete
+C:\Users\egeme\source\repos\SearchAndResult\DataAccessLayer\obj\Release\DataAccessLayer.dll
+C:\Users\egeme\source\repos\SearchAndResult\DataAccessLayer\obj\Release\DataAccessLayer.pdb
