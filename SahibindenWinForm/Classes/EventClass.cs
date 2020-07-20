@@ -44,6 +44,9 @@ namespace SahibindenWinForm.Classes
             foreach (DataRow item in dtSearchMaster.Rows)
             {
                 searchMasterID = Convert.ToInt32(item["ID"]);
+                DataTable dtAdvert = SQLClass.GetDataTable("SELECT AdvertID FROM TABLE_ADVERT (NOLOCK) WHERE IsDeleted = 0 AND SearchMasterID = " + searchMasterID);
+                List<int> advertDBList = GeneralClass.DataTabletoIntList(dtAdvert);
+                List<int> advertWebList = new List<int>();
                 int advertTypeID = Convert.ToInt32(item["ADVERTTYPEID"]);
                 bool contiuneOnNextPage = true;
                 string filePath = AppStartUpPath + "\\HTML\\tobedeleted.html";
@@ -51,6 +54,7 @@ namespace SahibindenWinForm.Classes
                 string siteAddress;
                 while (contiuneOnNextPage)
                 {
+                    List<int> advertWebList_ = new List<int>();
                     siteAddress = SQLClass.GetSingleCellDataComplex("SP_GETSEARCHURL " + searchMasterID.ToString() + ", " + currentPage.ToString());
                     if (File.Exists(filePath))
                         siteContent = File.ReadAllText(filePath);
@@ -68,7 +72,7 @@ namespace SahibindenWinForm.Classes
                     string trimmedSiteContent = GeneralClass.TrimHelper(HTMLCriteriaClass.AdvertTrimCriteria, siteContent);
                     string cleanedSiteContent = WebUtility.HtmlDecode(GeneralClass.ReplaceNonAnsiChars(GeneralClass.CleanData(trimmedSiteContent)));
                     List<string> splittedInput = GeneralClass.SplitDivisionHelper(HTMLCriteriaClass.AdvertSplitDivisionCriteria, cleanedSiteContent, false);
-                    List<ResultModel> ResultModelList = GeneralClass.PopulateResultModel(splittedInput, advertTypeID, searchMasterID);
+                    List<ResultModel> ResultModelList = GeneralClass.PopulateResultModel(splittedInput, advertTypeID, searchMasterID, advertDBList, out advertWebList_);
                     using (DataTable dataTable = GeneralClass.ConvertListToDataTable(ResultModelList))
                         SQLClass.BulkInsert(dataTable, "TABLE_ADVERT");
                     if (!test)
@@ -76,7 +80,9 @@ namespace SahibindenWinForm.Classes
                     if (splittedInput.Count < 20)
                         contiuneOnNextPage = false;
                     currentPage++;
+                    advertWebList.AddRange(advertWebList_);
                 }
+                GeneralClass.MarkAsDeleted(advertDBList, advertWebList);
             }
         }
         #endregion

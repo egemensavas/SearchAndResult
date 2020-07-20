@@ -13,15 +13,23 @@
           <Property Name="SearchMasterID" Type="int" Nullable="false" />
           <Property Name="CreateDate" Type="date" Nullable="false" />
           <Property Name="IsSeen" Type="bit" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
           <Property Name="AdvertID" Type="int" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="ThumbnailLink" Type="varchar" MaxLength="200" Nullable="false" />
           <Property Name="Location" Type="nvarchar" MaxLength="40" Nullable="false" />
           <Property Name="AdvertDate" Type="date" Nullable="false" />
           <Property Name="Price" Type="int" Nullable="false" />
-          <Property Name="Size" Type="int" />
-          <Property Name="Room" Type="nvarchar" MaxLength="40" />
-          <Property Name="Heating" Type="nvarchar" MaxLength="40" />
+          <Property Name="Size" Type="int" Nullable="false" />
+          <Property Name="Room" Type="nvarchar" MaxLength="40" Nullable="false" />
+          <Property Name="Heating" Type="nvarchar" MaxLength="40" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TABLE_ADVERT_TYPE">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="40" Nullable="false" />
         </EntityType>
         <EntityType Name="TABLE_SEARCH_DETAIL">
           <Key>
@@ -39,6 +47,7 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="Notes" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="AdvertTypeID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="TABLE_SEARCHABLE_TYPE">
           <Key>
@@ -81,12 +90,25 @@ warning 6002: The table/view 'SAHIBINDENDB.dbo.VIEW_NOTIFICATION' does not have 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_TABLE_SEARCH_MASTER_TABLE_ADVERT_TYPE">
+          <End Role="TABLE_ADVERT_TYPE" Type="Self.TABLE_ADVERT_TYPE" Multiplicity="1" />
+          <End Role="TABLE_SEARCH_MASTER" Type="Self.TABLE_SEARCH_MASTER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TABLE_ADVERT_TYPE">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TABLE_SEARCH_MASTER">
+              <PropertyRef Name="AdvertTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Function Name="SP_GETSEARCHURL" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="ID" Type="int" Mode="In" />
           <Parameter Name="PAGE" Type="int" Mode="In" />
         </Function>
         <EntityContainer Name="SAHIBINDENDBModelStoreContainer">
           <EntitySet Name="TABLE_ADVERT" EntityType="Self.TABLE_ADVERT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TABLE_ADVERT_TYPE" EntityType="Self.TABLE_ADVERT_TYPE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TABLE_SEARCH_DETAIL" EntityType="Self.TABLE_SEARCH_DETAIL" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TABLE_SEARCH_MASTER" EntityType="Self.TABLE_SEARCH_MASTER" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TABLE_SEARCHABLE_TYPE" EntityType="Self.TABLE_SEARCHABLE_TYPE" Schema="dbo" store:Type="Tables" />
@@ -103,6 +125,10 @@ warning 6002: The table/view 'SAHIBINDENDB.dbo.VIEW_NOTIFICATION' does not have 
           <AssociationSet Name="FK_TABLE_SEARCH_DETAIL_TABLE_SEARCHABLE_TYPE" Association="Self.FK_TABLE_SEARCH_DETAIL_TABLE_SEARCHABLE_TYPE">
             <End Role="TABLE_SEARCHABLE_TYPE" EntitySet="TABLE_SEARCHABLE_TYPE" />
             <End Role="TABLE_SEARCH_DETAIL" EntitySet="TABLE_SEARCH_DETAIL" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TABLE_SEARCH_MASTER_TABLE_ADVERT_TYPE" Association="Self.FK_TABLE_SEARCH_MASTER_TABLE_ADVERT_TYPE">
+            <End Role="TABLE_ADVERT_TYPE" EntitySet="TABLE_ADVERT_TYPE" />
+            <End Role="TABLE_SEARCH_MASTER" EntitySet="TABLE_SEARCH_MASTER" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -124,9 +150,10 @@ warning 6002: The table/view 'SAHIBINDENDB.dbo.VIEW_NOTIFICATION' does not have 
           <Property Name="Price" Type="Int32" Nullable="false" />
           <NavigationProperty Name="TABLE_SEARCH_MASTER" Relationship="Self.FK_TABLE_ADVERT_TABLE_SEARCH_MASTER" FromRole="TABLE_ADVERT" ToRole="TABLE_SEARCH_MASTER" />
           <Property Name="IsSeen" Type="Boolean" Nullable="false" />
-          <Property Name="Size" Type="Int32" />
-          <Property Name="Room" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
-          <Property Name="Heating" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="Size" Type="Int32" Nullable="false" />
+          <Property Name="Room" Type="String" MaxLength="40" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Heating" Type="String" MaxLength="40" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="TABLE_SEARCH_DETAIL">
           <Key>
@@ -148,6 +175,8 @@ warning 6002: The table/view 'SAHIBINDENDB.dbo.VIEW_NOTIFICATION' does not have 
           <Property Name="Notes" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="TABLE_ADVERT" Relationship="Self.FK_TABLE_ADVERT_TABLE_SEARCH_MASTER" FromRole="TABLE_SEARCH_MASTER" ToRole="TABLE_ADVERT" />
           <NavigationProperty Name="TABLE_SEARCH_DETAIL" Relationship="Self.FK_TABLE_SEARCH_DETAIL_TABLE_SEARCH_MASTER" FromRole="TABLE_SEARCH_MASTER" ToRole="TABLE_SEARCH_DETAIL" />
+          <Property Name="AdvertTypeID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="TABLE_ADVERT_TYPE" Relationship="SAHIBINDENDBModel.FK_TABLE_SEARCH_MASTER_TABLE_ADVERT_TYPE" FromRole="TABLE_SEARCH_MASTER" ToRole="TABLE_ADVERT_TYPE" />
         </EntityType>
         <EntityType Name="TABLE_SEARCHABLE_TYPE">
           <Key>
@@ -215,6 +244,11 @@ warning 6002: The table/view 'SAHIBINDENDB.dbo.VIEW_NOTIFICATION' does not have 
             <Parameter Name="PAGE" Mode="In" Type="Int32" />
           </FunctionImport>
           <EntitySet Name="VIEW_NOTIFICATION" EntityType="SAHIBINDENDBModel.VIEW_NOTIFICATION" />
+          <EntitySet Name="TABLE_ADVERT_TYPE" EntityType="SAHIBINDENDBModel.TABLE_ADVERT_TYPE" />
+          <AssociationSet Name="FK_TABLE_SEARCH_MASTER_TABLE_ADVERT_TYPE" Association="SAHIBINDENDBModel.FK_TABLE_SEARCH_MASTER_TABLE_ADVERT_TYPE">
+            <End Role="TABLE_ADVERT_TYPE" EntitySet="TABLE_ADVERT_TYPE" />
+            <End Role="TABLE_SEARCH_MASTER" EntitySet="TABLE_SEARCH_MASTER" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="VIEW_NOTIFICATION">
           <Key>
@@ -224,6 +258,26 @@ warning 6002: The table/view 'SAHIBINDENDB.dbo.VIEW_NOTIFICATION' does not have 
           <Property Name="NotificationMessage" Type="String" Nullable="false" MaxLength="22" FixedLength="false" Unicode="false" />
           <Property Name="SearchMasterID" Type="Int32" Nullable="false" />
         </EntityType>
+        <EntityType Name="TABLE_ADVERT_TYPE">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="TABLE_SEARCH_MASTER" Relationship="SAHIBINDENDBModel.FK_TABLE_SEARCH_MASTER_TABLE_ADVERT_TYPE" FromRole="TABLE_ADVERT_TYPE" ToRole="TABLE_SEARCH_MASTER" />
+        </EntityType>
+        <Association Name="FK_TABLE_SEARCH_MASTER_TABLE_ADVERT_TYPE">
+          <End Type="SAHIBINDENDBModel.TABLE_ADVERT_TYPE" Role="TABLE_ADVERT_TYPE" Multiplicity="1" />
+          <End Type="SAHIBINDENDBModel.TABLE_SEARCH_MASTER" Role="TABLE_SEARCH_MASTER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TABLE_ADVERT_TYPE">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TABLE_SEARCH_MASTER">
+              <PropertyRef Name="AdvertTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -233,6 +287,7 @@ warning 6002: The table/view 'SAHIBINDENDB.dbo.VIEW_NOTIFICATION' does not have 
           <EntitySetMapping Name="TABLE_ADVERT">
             <EntityTypeMapping TypeName="SAHIBINDENDBModel.TABLE_ADVERT">
               <MappingFragment StoreEntitySet="TABLE_ADVERT">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="Heating" ColumnName="Heating" />
                 <ScalarProperty Name="Room" ColumnName="Room" />
                 <ScalarProperty Name="Size" ColumnName="Size" />
@@ -262,6 +317,7 @@ warning 6002: The table/view 'SAHIBINDENDB.dbo.VIEW_NOTIFICATION' does not have 
           <EntitySetMapping Name="TABLE_SEARCH_MASTER">
             <EntityTypeMapping TypeName="SAHIBINDENDBModel.TABLE_SEARCH_MASTER">
               <MappingFragment StoreEntitySet="TABLE_SEARCH_MASTER">
+                <ScalarProperty Name="AdvertTypeID" ColumnName="AdvertTypeID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Notes" ColumnName="Notes" />
@@ -282,6 +338,14 @@ warning 6002: The table/view 'SAHIBINDENDB.dbo.VIEW_NOTIFICATION' does not have 
               <MappingFragment StoreEntitySet="VIEW_NOTIFICATION">
               <ScalarProperty Name="SearchMasterID" ColumnName="SearchMasterID" />
                 <ScalarProperty Name="NotificationMessage" ColumnName="NotificationMessage" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TABLE_ADVERT_TYPE">
+            <EntityTypeMapping TypeName="SAHIBINDENDBModel.TABLE_ADVERT_TYPE">
+              <MappingFragment StoreEntitySet="TABLE_ADVERT_TYPE">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

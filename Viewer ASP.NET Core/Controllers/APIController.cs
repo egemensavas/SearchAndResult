@@ -17,21 +17,37 @@ namespace Viewer_ASP.NET_Core.Controllers
     public class APIController : Controller
     {
         [HttpGet]
-        public IEnumerable<AdvertModel> FillDataToScreen([FromQuery] int SearchMasterID)
+        public IEnumerable<AdvertModel> FillDataToScreen([FromQuery] int SearchMasterID, [FromQuery] string SortOrder)
         {
+            ViewData["PriceSortParm"] = SortOrder == "price" ? "price_desc" : "price";
             List<AdvertModel> result_ = new List<AdvertModel>();
             GeneralClass cls = new GeneralClass();
-            var a = cls.GetAdvertData(SearchMasterID);
-            foreach (var b in a)
+            IEnumerable<TABLE_ADVERT> Adverts;
+            switch (SortOrder)
+            {
+                case "price":
+                    Adverts = cls.GetAdvertData(SearchMasterID).OrderBy(x => x.Price);
+                    break;
+                case "price_desc":
+                    Adverts = cls.GetAdvertData(SearchMasterID).OrderByDescending(x => x.Price);
+                    break;
+                default:
+                    Adverts = cls.GetAdvertData(SearchMasterID).OrderByDescending(x => x.CreateDate);
+                    break;
+            }
+            foreach (var advert in Adverts)
             {
                 AdvertModel x = new AdvertModel
                 {
-                    AdvertLink = "https://www.sahibinden.com/ilan/" + b.AdvertID.ToString() + "/detay",
-                    Description = b.Description,
-                    ThumbnailLink = b.ThumbnailLink,
-                    Location = b.Location,
-                    AdvertDate = b.AdvertDate.ToString(),
-                    Price = b.Price.ToString() + " TL"
+                    AdvertLink = "https://www.sahibinden.com/ilan/" + advert.AdvertID.ToString() + "/detay",
+                    Description = advert.Description,
+                    ThumbnailLink = advert.ThumbnailLink,
+                    Location = advert.Location,
+                    AdvertDate = String.Format("{0:dd/MM/yyyy}", advert.AdvertDate),
+                    Price = String.Format("{0:n0}", advert.Price) + " TL",
+                    Size = advert.Size.ToString(),
+                    Room = advert.Room,
+                    Heating = advert.Heating
                 };
                 result_.Add(x);
             }

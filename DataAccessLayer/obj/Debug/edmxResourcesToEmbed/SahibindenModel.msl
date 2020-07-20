@@ -4,6 +4,7 @@
     <EntitySetMapping Name="TABLE_ADVERT">
       <EntityTypeMapping TypeName="SAHIBINDENDBModel.TABLE_ADVERT">
         <MappingFragment StoreEntitySet="TABLE_ADVERT">
+          <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
           <ScalarProperty Name="Heating" ColumnName="Heating" />
           <ScalarProperty Name="Room" ColumnName="Room" />
           <ScalarProperty Name="Size" ColumnName="Size" />
@@ -33,6 +34,7 @@
     <EntitySetMapping Name="TABLE_SEARCH_MASTER">
       <EntityTypeMapping TypeName="SAHIBINDENDBModel.TABLE_SEARCH_MASTER">
         <MappingFragment StoreEntitySet="TABLE_SEARCH_MASTER">
+          <ScalarProperty Name="AdvertTypeID" ColumnName="AdvertTypeID" />
           <ScalarProperty Name="ID" ColumnName="ID" />
           <ScalarProperty Name="Description" ColumnName="Description" />
           <ScalarProperty Name="Notes" ColumnName="Notes" />
@@ -53,6 +55,14 @@
         <MappingFragment StoreEntitySet="VIEW_NOTIFICATION">
           <ScalarProperty Name="SearchMasterID" ColumnName="SearchMasterID" />
           <ScalarProperty Name="NotificationMessage" ColumnName="NotificationMessage" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TABLE_ADVERT_TYPE">
+      <EntityTypeMapping TypeName="SAHIBINDENDBModel.TABLE_ADVERT_TYPE">
+        <MappingFragment StoreEntitySet="TABLE_ADVERT_TYPE">
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

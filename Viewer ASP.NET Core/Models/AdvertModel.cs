@@ -15,5 +15,8 @@ namespace Viewer_ASP.NET_Core
         public string AdvertDate { get; set; }
 
         public string Price { get; set; }
+        public string Size { get; set; }
+        public string Room { get; set; }
+        public string Heating { get; set; }
     }
 }

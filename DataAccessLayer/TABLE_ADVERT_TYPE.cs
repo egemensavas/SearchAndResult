@@ -12,24 +12,18 @@ namespace DataAccessLayer
     using System;
     using System.Collections.Generic;
     
-    public partial class TABLE_SEARCH_MASTER
+    public partial class TABLE_ADVERT_TYPE
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public TABLE_SEARCH_MASTER()
+        public TABLE_ADVERT_TYPE()
         {
-            this.TABLE_ADVERT = new HashSet<TABLE_ADVERT>();
-            this.TABLE_SEARCH_DETAIL = new HashSet<TABLE_SEARCH_DETAIL>();
+            this.TABLE_SEARCH_MASTER = new HashSet<TABLE_SEARCH_MASTER>();
         }
     
         public int ID { get; set; }
         public string Description { get; set; }
-        public string Notes { get; set; }
-        public int AdvertTypeID { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TABLE_ADVERT> TABLE_ADVERT { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TABLE_SEARCH_DETAIL> TABLE_SEARCH_DETAIL { get; set; }
-        public virtual TABLE_ADVERT_TYPE TABLE_ADVERT_TYPE { get; set; }
+        public virtual ICollection<TABLE_SEARCH_MASTER> TABLE_SEARCH_MASTER { get; set; }
     }
 }

@@ -9,12 +9,19 @@ export class HomeComponent {
   public Adverts: AdvertModel[];
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
-    http.get<AdvertModel[]>(baseUrl + 'API/FillDataToScreen?SearchMasterID=2').subscribe(result => {
+    http.get<AdvertModel[]>(baseUrl + 'API/FillDataToScreen?SearchMasterID=2&SortOrder=price').subscribe(result => {
       this.Adverts = result;
       console.log(result);
     }, error => console.error(error));
   }
+
+  public sortData() {
+
+  }
+
 }
+
+
 
 interface AdvertModel {
   AdvertLink: string;
@@ -23,4 +30,7 @@ interface AdvertModel {
   Location: string;
   AdvertDate: string;
   Price: string;
+  Size: string;
+  Room: string;
+  Heating: string;
 }

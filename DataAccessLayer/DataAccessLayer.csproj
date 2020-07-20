@@ -71,6 +71,9 @@
     <Compile Include="TABLE_ADVERT.cs">
       <DependentUpon>SahibindenModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="TABLE_ADVERT_TYPE.cs">
+      <DependentUpon>SahibindenModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="TABLE_SEARCHABLE_TYPE.cs">
       <DependentUpon>SahibindenModel.tt</DependentUpon>
     </Compile>

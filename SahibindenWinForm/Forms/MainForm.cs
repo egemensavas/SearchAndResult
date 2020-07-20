@@ -28,8 +28,10 @@ namespace SahibindenWinForm
         private void MainForm_Load(object sender, EventArgs e)
         {
             this.Visible = false;
+            var watch = System.Diagnostics.Stopwatch.StartNew();
             EventClass.ButtonClickEvent(null, null);
-            MessageBox.Show("Done.");
+            watch.Stop();
+            MessageBox.Show("Done in " + (watch.ElapsedMilliseconds/1000).ToString().ToString() + " seconds.");
             Close();
         }
     }

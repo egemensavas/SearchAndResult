@@ -6,13 +6,15 @@
     <edmx:Diagrams>
       <Diagram DiagramId="7c8d6041b7ee4d649e24ba512669c96c" Name="Diagram1">
         <EntityTypeShape EntityType="SAHIBINDENDBModel.TABLE_ADVERT" Width="1.5" PointX="3" PointY="4.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAHIBINDENDBModel.TABLE_SEARCH_DETAIL" Width="1.5" PointX="6" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SAHIBINDENDBModel.TABLE_SEARCH_DETAIL" Width="4.375" PointX="6" PointY="4.5" IsExpanded="true" />
         <EntityTypeShape EntityType="SAHIBINDENDBModel.TABLE_SEARCH_MASTER" Width="1.5" PointX="0.75" PointY="4.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAHIBINDENDBModel.TABLE_SEARCHABLE_TYPE" Width="1.5" PointX="3.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SAHIBINDENDBModel.TABLE_SEARCHABLE_TYPE" Width="4" PointX="3.75" PointY="0.75" IsExpanded="true" />
         <AssociationConnector Association="SAHIBINDENDBModel.FK_TABLE_ADVERT_TABLE_SEARCH_MASTER" ManuallyRouted="false" />
         <AssociationConnector Association="SAHIBINDENDBModel.FK_TABLE_SEARCH_DETAIL_TABLE_SEARCH_MASTER" ManuallyRouted="false" />
         <AssociationConnector Association="SAHIBINDENDBModel.FK_TABLE_SEARCH_DETAIL_TABLE_SEARCHABLE_TYPE" ManuallyRouted="false" />
         <EntityTypeShape EntityType="SAHIBINDENDBModel.VIEW_NOTIFICATION" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="SAHIBINDENDBModel.TABLE_ADVERT_TYPE" Width="1.5" PointX="0.75" PointY="7.875" />
+        <AssociationConnector Association="SAHIBINDENDBModel.FK_TABLE_SEARCH_MASTER_TABLE_ADVERT_TYPE" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

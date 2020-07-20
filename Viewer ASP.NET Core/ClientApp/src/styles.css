@@ -14,3 +14,27 @@ code {
   background-color: #1b6ec2;
   border-color: #1861ac;
 }
+
+.tableFixHead {
+  overflow-y: auto;
+  height: 100px;
+}
+
+  .tableFixHead thead th {
+    position: sticky;
+    top: 0;
+  }
+
+/* Just common table stuff. Really. */
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  padding: 8px 16px;
+}
+
+th {
+  background: #eee;
+}

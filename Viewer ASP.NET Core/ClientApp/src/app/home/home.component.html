@@ -1,14 +1,17 @@
-<p>Data</p>
-
 <p *ngIf="!Adverts"><em>Loading...</em></p>
 
-<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="Adverts">
-  <thead>
+<table class='tableFixHead table table-striped table-bordered table-hover table-responsive-sm' aria-labelledby="tableLabel" *ngIf="Adverts">
+  <thead class="thead-dark">
     <tr>
-      <th>Price</th>
+      <th>
+        Price <button (click)="sortData()">Sort</button>
+      </th>
       <th>Description</th>
       <th>Location</th>
       <th>Date</th>
+      <th>Size</th>
+      <th>Room</th>
+      <th>Heating</th>
     </tr>
   </thead>
   <tbody>
@@ -17,6 +20,9 @@
       <td><a target="_blank" href="{{ advert.advertLink }}">{{ advert.description }}</a><br /><img src="{{ advert.thumbnailLink }}" /></td>
       <td>{{ advert.location }}</td>
       <td>{{ advert.advertDate }}</td>
+      <td>{{ advert.size }}</td>
+      <td>{{ advert.room }}</td>
+      <td>{{ advert.heating }}</td>
     </tr>
   </tbody>
 </table>

@@ -98,15 +98,14 @@ namespace SahibindenWinForm.Classes
             return result;
         }
 
-        public List<ResultModel> PopulateResultModel(List<string> splittedInput, int AdvertTypeID, int searchMasterID)
+        public List<ResultModel> PopulateResultModel(List<string> splittedInput, int AdvertTypeID, int searchMasterID, List<int> advertDBList, out List<int> advertWebList)
         {
             List<ResultModel> ResultModelList = new List<ResultModel>();
             int advertID;
             AdvertType advertTypeID;
             advertTypeID = (AdvertType)AdvertTypeID;
-            DataTable dtAdvert = SQLClass.GetDataTable("SELECT AdvertID FROM TABLE_ADVERT (NOLOCK) WHERE SearchMasterID = " + searchMasterID);
-            List<int> advertDBList = DataTabletoIntList(dtAdvert);
             bool IsReaLEstate = advertTypeID == AdvertType.RealEstate;
+            advertWebList = new List<int>();
             string AttributesContent;
             List<string> ResultAttribute = new List<string>();
             foreach (var item in splittedInput)
@@ -117,6 +116,7 @@ namespace SahibindenWinForm.Classes
                     ResultAttribute = SplitDivisionHelper(HTMLCriteriaClass.ResultAttributeDivisionCriteria, AttributesContent, true);
                 }
                 advertID = Convert.ToInt32(GetDataFromSplittedHTML(HTMLCriteriaClass.AdvertIDCriteria, item));
+                advertWebList.Add(advertID);
                 if (!advertDBList.Contains(advertID))
                 {
                     ResultModel Addition = new ResultModel
@@ -136,6 +136,22 @@ namespace SahibindenWinForm.Classes
                 }
             }
             return ResultModelList;
+        }
+
+        public void MarkAsDeleted(List<int> advertDBList, List<int> advertWebList)
+        {
+            string SQLCommand = "";
+            foreach (var item in advertDBList)
+            {
+                if (!advertWebList.Contains(item))
+                {
+                    if (string.IsNullOrEmpty(SQLCommand))
+                        SQLCommand = "UPDATE TABLE_ADVERT SET ISDELETED = 1 WHERE ADVERTID IN (";
+                    SQLCommand += item.ToString() + ", ";
+                }
+            }
+            if (!string.IsNullOrEmpty(SQLCommand))
+                SQLClass.GetDataTable(SQLCommand + "0)");
         }
 
         public List<string> SplitDivisionHelper(DivisionCriteria SDC, string Input, bool IsRemoveDivision)

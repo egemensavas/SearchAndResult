@@ -24,9 +24,10 @@ namespace DataAccessLayer
         public int SearchMasterID { get; set; }
         public int Price { get; set; }
         public bool IsSeen { get; set; }
-        public Nullable<int> Size { get; set; }
+        public int Size { get; set; }
         public string Room { get; set; }
         public string Heating { get; set; }
+        public bool IsDeleted { get; set; }
     
         public virtual TABLE_SEARCH_MASTER TABLE_SEARCH_MASTER { get; set; }
     }

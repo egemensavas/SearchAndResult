@@ -13,7 +13,7 @@ namespace DataAccessLayer
         public IEnumerable<TABLE_ADVERT> GetAdvertData(int SearchMasterID)
         {
             SAHIBINDENDBEntities entities = new SAHIBINDENDBEntities();
-            return entities.TABLE_ADVERT.Where(x => x.SearchMasterID == SearchMasterID).ToList<TABLE_ADVERT>();
+            return entities.TABLE_ADVERT.Where(x => x.SearchMasterID == SearchMasterID && x.IsDeleted == false).ToList<TABLE_ADVERT>();
         }
 
         public string NotificationMessage(int SearchMasterID)
@@ -32,13 +32,8 @@ namespace DataAccessLayer
             {
                 var result = db.TABLE_ADVERT.Where(b => b.IsSeen == false && b.SearchMasterID == SearchMasterID);
                 if (result != null)
-                {
                     foreach (var item in result)
-                    {
                         item.IsSeen = true;
-
-                    }
-                }
                 db.SaveChanges();
             }
         }
