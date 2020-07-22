@@ -52,7 +52,6 @@ namespace SahibindenWinForm.Models
             public int Size { get; set; }
             public string Room { get; set; }
             public string Heating { get; set; }
-
         }
     }
 }

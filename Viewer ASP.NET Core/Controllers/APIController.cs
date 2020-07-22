@@ -22,19 +22,12 @@ namespace Viewer_ASP.NET_Core.Controllers
             ViewData["PriceSortParm"] = SortOrder == "price" ? "price_desc" : "price";
             List<AdvertModel> result_ = new List<AdvertModel>();
             GeneralClass cls = new GeneralClass();
-            IEnumerable<TABLE_ADVERT> Adverts;
-            switch (SortOrder)
+            IEnumerable<TABLE_ADVERT> Adverts = SortOrder switch
             {
-                case "price":
-                    Adverts = cls.GetAdvertData(SearchMasterID).OrderBy(x => x.Price);
-                    break;
-                case "price_desc":
-                    Adverts = cls.GetAdvertData(SearchMasterID).OrderByDescending(x => x.Price);
-                    break;
-                default:
-                    Adverts = cls.GetAdvertData(SearchMasterID).OrderByDescending(x => x.CreateDate);
-                    break;
-            }
+                "price" => cls.GetAdvertData(SearchMasterID).OrderBy(x => x.Price),
+                "price_desc" => cls.GetAdvertData(SearchMasterID).OrderByDescending(x => x.Price),
+                _ => cls.GetAdvertData(SearchMasterID).OrderByDescending(x => x.CreateDate),
+            };
             foreach (var advert in Adverts)
             {
                 AdvertModel x = new AdvertModel

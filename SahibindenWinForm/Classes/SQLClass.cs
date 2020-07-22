@@ -96,7 +96,7 @@ namespace SahibindenWinForm.Classes
                     {
                         bulkCopy.WriteToServer(DataTable);
                     }
-                    catch 
+                    catch (Exception e)
                     {
 
                     }

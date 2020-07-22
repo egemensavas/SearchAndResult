@@ -272,6 +272,7 @@ namespace SahibindenWinForm.Classes
                     dr["SearchMasterID"] = item.SearchMasterID;
                     dr["CreateDate"] = DateTime.Now;
                     dr["IsSeen"] = false;
+                    dr["IsDeleted"] = false;
                     dr["AdvertID"] = item.AdvertID;
                     dr["Description"] = item.Description;
                     dr["ThumbnailLink"] = item.ThumbnailLink;
