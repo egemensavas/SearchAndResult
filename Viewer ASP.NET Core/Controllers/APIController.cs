@@ -4,6 +4,7 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Web;
 using DataAccessLayer;
 using Microsoft.AspNetCore.Mvc;
@@ -90,14 +91,18 @@ namespace Viewer_ASP.NET_Core.Controllers
             SQLClass SQLClass = new SQLClass();
             HelperClass HelperClass = new HelperClass();
             HTMLCriteriaClass HTMLCriteriaClass = new HTMLCriteriaClass();
-            IEnumerable<string> result;
+            List<string> result = new List<string>();
             string siteContent = string.Empty;
-            DataTable dtSearchMaster = SQLClass.GetDataTable("SELECT ID, ADVERTTYPEID FROM TABLE_SEARCH_MASTER (NOLOCK)");
+            result.Add("Step 1");
+            DataTable dtSearchMaster = SQLClass.GetDataTable("SELECT ID, ADVERTTYPEID FROM TABLE_SEARCH_MASTER (NOLOCK) WHERE ISACTIVE = 1", out string Error);
+            result.Add("Step 2: " + Error);
             int searchMasterID;
             foreach (DataRow item in dtSearchMaster.Rows)
             {
+                result.Add("Step 3: " + Error);
                 searchMasterID = Convert.ToInt32(item["ID"]);
-                DataTable dtAdvert = SQLClass.GetDataTable("SELECT AdvertID FROM TABLE_ADVERT (NOLOCK) WHERE IsDeleted = 0 AND SearchMasterID = " + searchMasterID);
+                DataTable dtAdvert = SQLClass.GetDataTable("SELECT AdvertID FROM TABLE_ADVERT (NOLOCK) WHERE SearchMasterID = " + searchMasterID, out Error);
+                result.Add("Step 4: " + Error);
                 List<int> advertDBList = HelperClass.DataTabletoIntList(dtAdvert);
                 List<int> advertWebList = new List<int>();
                 int advertTypeID = Convert.ToInt32(item["ADVERTTYPEID"]);
@@ -108,18 +113,30 @@ namespace Viewer_ASP.NET_Core.Controllers
                 {
                     List<int> advertWebList_ = new List<int>();
                     siteAddress = SQLClass.GetSingleCellDataComplex("SP_GETSEARCHURL " + searchMasterID.ToString() + ", " + currentPage.ToString());
-                    using (WebClient client = new WebClient())
+                    result.Add(siteAddress);
+                    using (HttpClient client = new HttpClient())
                     {
-                        client.Headers.Add("user-agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36");
-                        siteContent = client.DownloadString(siteAddress);
+                        client.DefaultRequestHeaders.Add("user-agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36");
+                        using HttpResponseMessage response = client.GetAsync(siteAddress).Result;
+                        using HttpContent content = response.Content;
+                        siteContent = content.ReadAsStringAsync().Result;
                     }
+                    result.Add(siteContent);
                     if (siteContent.Contains("too-many-requests"))
                     {
                         result = new List<string>() { "We are banned :)" };
                         return result;
                     }
+                    else if (siteContent.Contains("forceLoginPageMessage"))
+                    {
+                        AutomatedUILogin selenium = new AutomatedUILogin();
+                        selenium.SahibindenLogin();
+                        selenium.Dispose();
+                    }
                     string trimmedSiteContent = HelperClass.TrimHelper(HTMLCriteriaClass.AdvertTrimCriteria, siteContent);
+                    result.Add(trimmedSiteContent);
                     string cleanedSiteContent = WebUtility.HtmlDecode(HelperClass.ReplaceNonAnsiChars(HelperClass.CleanData(trimmedSiteContent)));
+                    result.Add(cleanedSiteContent);
                     List<string> splittedInput = HelperClass.SplitDivisionHelper(HTMLCriteriaClass.AdvertSplitDivisionCriteria, cleanedSiteContent, false);
                     List<ResultModel> ResultModelList = HelperClass.PopulateResultModel(splittedInput, advertTypeID, searchMasterID, advertDBList, out advertWebList_);
                     using (DataTable dataTable = HelperClass.ConvertListToDataTable(ResultModelList))
@@ -134,7 +151,7 @@ namespace Viewer_ASP.NET_Core.Controllers
                 SendNotification(searchMasterID);
             }
             watch.Stop();
-            result = new List<string>() { "Done in " + (watch.ElapsedMilliseconds / 1000).ToString().ToString() + " seconds." };
+            result.Add("Done in " + (watch.ElapsedMilliseconds / 1000).ToString() + " seconds.");
             return result;
         }
     }

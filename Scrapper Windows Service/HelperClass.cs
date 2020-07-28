@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Configuration;
 using System.Data;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
-using static Viewer_ASP.NET_Core.Models.GeneralModel;
+using System.Net.Http;
+using System.Reflection;
+using System.Web;
+using static Scrapper_Windows_Service.GeneralModel;
 
-namespace Viewer_ASP.NET_Core.Controllers
+namespace Scrapper_Windows_Service
 {
     public class HelperClass
     {
@@ -49,7 +53,7 @@ namespace Viewer_ASP.NET_Core.Controllers
             {
                 string tempString = Input.Substring(Input.IndexOf(SC.SearchStart) + SC.SearchStart.Length - 1);
                 if (tempString.IndexOf(SC.SearchEnd) > -1)
-                    tempString = tempString[1..tempString.IndexOf(SC.SearchEnd)];
+                    tempString = tempString.Substring(1, tempString.IndexOf(SC.SearchEnd) - 1);
                 if (!string.IsNullOrEmpty(tempString) && !string.IsNullOrEmpty(tempString))
                     result = tempString;
             }
@@ -138,7 +142,7 @@ namespace Viewer_ASP.NET_Core.Controllers
             return ResultModelList;
         }
 
-        public void MarkAsDeleted(List<int> advertDBList, List<int> advertWebList)
+        public string MarkAsDeleted(List<int> advertDBList, List<int> advertWebList)
         {
             string Error = string.Empty;
             string SQLCommand = "";
@@ -153,6 +157,7 @@ namespace Viewer_ASP.NET_Core.Controllers
             }
             if (!string.IsNullOrEmpty(SQLCommand))
                 SQLClass.GetDataTable(SQLCommand + "0)", out Error);
+            return Error;
         }
 
         public List<string> SplitDivisionHelper(DivisionCriteria SDC, string Input, bool IsRemoveDivision)
@@ -193,10 +198,8 @@ namespace Viewer_ASP.NET_Core.Controllers
         public DateTime ConvertToDateTime(string input)
         {
             DateTime result;
-
             string month = input.Substring(input.IndexOf(" "), input.LastIndexOf(" ") - 1);
             string alteredMonth = "";
-
             switch (month)
             {
                 case " Ocak ":
@@ -236,11 +239,9 @@ namespace Viewer_ASP.NET_Core.Controllers
                     alteredMonth = ".12.";
                     break;
             }
-
             input = input.Replace(month, alteredMonth);
-
-            result = Convert.ToDateTime(input);
-
+            System.Globalization.CultureInfo cultureinfo = new System.Globalization.CultureInfo("tr-TR");
+            result = Convert.ToDateTime(input, cultureinfo);
             return result;
         }
 
@@ -265,8 +266,7 @@ namespace Viewer_ASP.NET_Core.Controllers
 
         public DataTable ConvertListToDataTable(List<ResultModel> ResultModelList)
         {
-            string Error = string.Empty;
-            using DataTable DataTable = SQLClass.GetDataTable("SELECT * FROM TABLE_ADVERT (NOLOCK) WHERE 1 = 2", out Error);
+            using DataTable DataTable = SQLClass.GetDataTable("SELECT * FROM TABLE_ADVERT (NOLOCK) WHERE 1 = 2", out _);
             foreach (ResultModel item in ResultModelList)
             {
                 DataRow dr = DataTable.NewRow();
@@ -287,6 +287,132 @@ namespace Viewer_ASP.NET_Core.Controllers
             }
             return DataTable;
         }
+
+        public string DoTheThing()
+        {
+            var watch = Stopwatch.StartNew();
+            SQLClass SQLClass = new SQLClass();
+            HTMLCriteriaClass HTMLCriteriaClass = new HTMLCriteriaClass();
+            string siteContent = string.Empty;
+            DataTable dtSearchMaster = SQLClass.GetDataTable("SELECT ID, ADVERTTYPEID FROM TABLE_SEARCH_MASTER (NOLOCK) WHERE ISACTIVE = 1", out string Error);
+            int searchMasterID;
+            foreach (DataRow item in dtSearchMaster.Rows)
+            {
+                searchMasterID = Convert.ToInt32(item["ID"]);
+                DataTable dtAdvert = SQLClass.GetDataTable("SELECT AdvertID FROM TABLE_ADVERT (NOLOCK) WHERE SearchMasterID = " + searchMasterID, out Error);
+                List<int> advertDBList = DataTabletoIntList(dtAdvert);
+                List<int> advertWebList = new List<int>();
+                int advertTypeID = Convert.ToInt32(item["ADVERTTYPEID"]);
+                bool contiuneOnNextPage = true;
+                int currentPage = 1;
+                string siteAddress;
+                while (contiuneOnNextPage)
+                {
+                    List<int> advertWebList_ = new List<int>();
+                    siteAddress = SQLClass.GetSingleCellDataComplex("SP_GETSEARCHURL " + searchMasterID.ToString() + ", " + currentPage.ToString());
+                    using (HttpClient client = new HttpClient())
+                    {
+                        client.DefaultRequestHeaders.Add("user-agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36");
+                        using HttpResponseMessage response = client.GetAsync(siteAddress).Result;
+                        using HttpContent content = response.Content;
+                        siteContent = content.ReadAsStringAsync().Result;
+                    }
+                    if (siteContent.Contains("too-many-requests"))
+                    {
+                        LogWriter("We are banned :)");
+                        return "";
+                    }
+                    string trimmedSiteContent = TrimHelper(HTMLCriteriaClass.AdvertTrimCriteria, siteContent);
+                    string cleanedSiteContent = WebUtility.HtmlDecode(ReplaceNonAnsiChars(CleanData(trimmedSiteContent)));
+                    List<string> splittedInput = SplitDivisionHelper(HTMLCriteriaClass.AdvertSplitDivisionCriteria, cleanedSiteContent, false);
+                    List<ResultModel> ResultModelList = PopulateResultModel(splittedInput, advertTypeID, searchMasterID, advertDBList, out advertWebList_);
+                    using (DataTable dataTable = ConvertListToDataTable(ResultModelList))
+                        SQLClass.BulkInsert(dataTable, "TABLE_ADVERT");
+                    if (splittedInput.Count < 20)
+                        contiuneOnNextPage = false;
+                    currentPage++;
+                    advertWebList.AddRange(advertWebList_);
+                }
+                if (advertWebList.Count > 0)
+                    MarkAsDeleted(advertDBList, advertWebList);
+                SendNotification(searchMasterID);
+            }
+            watch.Stop();
+            LogWriter("Done in " + (watch.ElapsedMilliseconds / 1000).ToString() + " seconds.");
+            return Error;
+        }
+
+        public void SendNotification(int SearchMasterID)
+        {
+            string Message = NotificationMessage(SearchMasterID);
+            if (!string.IsNullOrEmpty(Message))
+            {
+                OneSignalCall(Message);
+                UpdateSeen(SearchMasterID);
+            }
+        }
+
+        public void OneSignalCall(string Message)
+        {
+            string URL = "https://onesignal.com/api/v1/notifications";
+            string DATA = @"{
+                                ""app_id"": ""708d286a-e547-4c5c-8575-5cc801c4096b"",
+                                ""included_segments"": [""All""],
+                                ""contents"": {""en"": """ + HttpUtility.UrlDecode(Message) + @"""}
+                            }";
+
+            var request = (HttpWebRequest)WebRequest.Create(URL);
+            request.Method = "POST";
+            request.ContentType = "application/json";
+            request.Headers.Add("Authorization", "Basic OThhYzIxM2YtMmZjNi00N2Y0LTg4NTMtZjYzNWYxOWE2MmY3");
+            using (var streamWriter = new StreamWriter(request.GetRequestStream()))
+            {
+                string json = DATA;
+
+                streamWriter.Write(json);
+            }
+            var httpResponse = (HttpWebResponse)request.GetResponse();
+            using var streamReader = new StreamReader(httpResponse.GetResponseStream());
+            var result_ = streamReader.ReadToEnd();
+        }
+
+        public string NotificationMessage(int SearchMasterID)
+        {
+            string SQLCommand = "SELECT NotificationMessage FROM VIEW_NOTIFICATION WHERE SEARCHMASTERID = " + SearchMasterID;
+            string result = SQLClass.GetSingleCellDataComplex(SQLCommand);
+            return result;
+        }
+
+        public string UpdateSeen(int SearchMasterID)
+        {
+            string SQLCommand = "UPDATE TABLE_ADVERT SET ISSEEN = 1 WHERE SEARCHMASTERID = " + SearchMasterID;
+            SQLClass.GetDataTable(SQLCommand, out string Error);
+            return Error;
+        }
         #endregion
+
+        #region Logging
+        private string m_exePath = string.Empty;
+        public void LogWriter(string logMessage)
+        {
+            LogWrite(logMessage);
+        }
+        public void LogWrite(string logMessage)
+        {
+            m_exePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            using StreamWriter w = File.AppendText(m_exePath + "\\" + "log.txt");
+            Log(logMessage, w);
+        }
+
+        public void Log(string logMessage, TextWriter txtWriter)
+        {
+            txtWriter.Write("\r\nLog Entry : ");
+            txtWriter.WriteLine("{0} {1}", DateTime.Now.ToLongTimeString(),
+                DateTime.Now.ToLongDateString());
+            txtWriter.WriteLine("  :");
+            txtWriter.WriteLine("  :{0}", logMessage);
+            txtWriter.WriteLine("-------------------------------");
+        }
     }
+    #endregion
 }

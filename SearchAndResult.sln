@@ -7,9 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Viewer ASP.NET Core", "View
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccessLayer", "DataAccessLayer\DataAccessLayer.csproj", "{C4460130-A0A4-40F8-AC6C-E9F972DE5027}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SahibindenWinForm", "SahibindenWinForm\SahibindenWinForm.csproj", "{D169168E-4EC5-4200-92DD-2F7709A0A541}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppWithScheduler", "AppWithScheduler\AppWithScheduler.csproj", "{36E2F102-EBAE-460C-BF2F-8A11AC077414}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scrapper Windows Service", "Scrapper Windows Service\Scrapper Windows Service.csproj", "{9AD53607-BE5C-47FD-981E-36C5443EBAEE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,14 +25,14 @@ Global
 		{C4460130-A0A4-40F8-AC6C-E9F972DE5027}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C4460130-A0A4-40F8-AC6C-E9F972DE5027}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C4460130-A0A4-40F8-AC6C-E9F972DE5027}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D169168E-4EC5-4200-92DD-2F7709A0A541}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D169168E-4EC5-4200-92DD-2F7709A0A541}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D169168E-4EC5-4200-92DD-2F7709A0A541}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D169168E-4EC5-4200-92DD-2F7709A0A541}.Release|Any CPU.Build.0 = Release|Any CPU
 		{36E2F102-EBAE-460C-BF2F-8A11AC077414}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{36E2F102-EBAE-460C-BF2F-8A11AC077414}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{36E2F102-EBAE-460C-BF2F-8A11AC077414}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{36E2F102-EBAE-460C-BF2F-8A11AC077414}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9AD53607-BE5C-47FD-981E-36C5443EBAEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9AD53607-BE5C-47FD-981E-36C5443EBAEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9AD53607-BE5C-47FD-981E-36C5443EBAEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9AD53607-BE5C-47FD-981E-36C5443EBAEE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

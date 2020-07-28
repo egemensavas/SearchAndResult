@@ -2,7 +2,7 @@
 using System.Data;
 using System.Data.SqlClient;
 
-namespace Viewer_ASP.NET_Core.Controllers
+namespace Scrapper_Windows_Service
 {
     class SQLClass
     {
