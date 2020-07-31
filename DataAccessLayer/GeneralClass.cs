@@ -13,6 +13,8 @@ namespace DataAccessLayer
         public IEnumerable<TABLE_ADVERT> GetAdvertData(int SearchMasterID)
         {
             SAHIBINDENDBEntities entities = new SAHIBINDENDBEntities();
+            if(SearchMasterID == 0)
+                return entities.TABLE_ADVERT.ToList<TABLE_ADVERT>();
             return entities.TABLE_ADVERT.Where(x => x.SearchMasterID == SearchMasterID && x.IsDeleted == false).ToList<TABLE_ADVERT>();
         }
 

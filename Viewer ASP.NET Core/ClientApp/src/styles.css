@@ -38,3 +38,32 @@ th, td {
 th {
   background: #eee;
 }
+
+.border-3 {
+  border-width: 3px !important;
+}
+
+.legend .row:nth-of-type(odd) div {
+  background-color: aliceblue;
+}
+
+.legend .row:nth-of-type(even) div {
+  background: #FFFFFF;
+}
+
+.nopadding {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.smallpadding {
+  padding: 3px !important;
+  margin: 3px !important;
+}
+
+@media (max-width:800px) {
+
+  #top.row {
+    display: none !important;
+  }
+}

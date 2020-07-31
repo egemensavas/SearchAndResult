@@ -18,5 +18,8 @@ namespace Viewer_ASP.NET_Core
         public string Size { get; set; }
         public string Room { get; set; }
         public string Heating { get; set; }
+        public int Price_sort { get; set; }
+        public int SearchMasterID { get; set; }
+        public long Date_sort { get; set; }
     }
 }

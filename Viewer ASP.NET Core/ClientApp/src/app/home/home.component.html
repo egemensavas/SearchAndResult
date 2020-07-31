@@ -1,28 +1,111 @@
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+
 <p *ngIf="!Adverts"><em>Loading...</em></p>
 
-<table class='tableFixHead table table-striped table-bordered table-hover table-responsive-sm' aria-labelledby="tableLabel" *ngIf="Adverts">
-  <thead class="thead-dark">
-    <tr>
-      <th>
-        Price <button (click)="sortData()">Sort</button>
-      </th>
-      <th>Description</th>
-      <th>Location</th>
-      <th>Date</th>
-      <th>Size</th>
-      <th>Room</th>
-      <th>Heating</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let advert of Adverts">
-      <td>{{ advert.price }}</td>
-      <td><a target="_blank" href="{{ advert.advertLink }}">{{ advert.description }}</a><br /><img src="{{ advert.thumbnailLink }}" /></td>
-      <td>{{ advert.location }}</td>
-      <td>{{ advert.advertDate }}</td>
-      <td>{{ advert.size }}</td>
-      <td>{{ advert.room }}</td>
-      <td>{{ advert.heating }}</td>
-    </tr>
-  </tbody>
-</table>
+<div class="sticky-top bg-white">
+  <div name="navigation" class="container" *ngIf="Adverts">
+    <div class="row smallpadding">
+      <div class="col-sm-3">
+        <ul class="pagination justify-content-center align-self-center">
+          <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+          <li class="page-item"><a class="page-link" href="#">1</a></li>
+          <li class="page-item"><a class="page-link" href="#">2</a></li>
+          <li class="page-item"><a class="page-link" href="#">3</a></li>
+          <li class="page-item"><a class="page-link" href="#">Next</a></li>
+        </ul>
+      </div>
+      <div class="col-sm-6">
+        <form>
+          <select name="searchCriterias" class="custom-select" (change)="onChangeEvent($event)">
+            <option value="0" selected>Search Criteria Selection</option>
+            <option value="1">Canon Camera</option>
+            <option value="2">Mehtap Emlak Kartal</option>
+            <option value="3">Mehtap Emlak Maltepe</option>
+          </select>
+        </form>
+      </div>
+      <div class="col-sm-3">
+        <input #advertsFilter type="text" class="form-control" placeholder="Filter Adverts" (keyup)="filterAdverts(1, advertsFilter.value)">
+      </div>
+    </div>
+  </div>
+
+  <div class="container" *ngIf="Adverts">
+    <div class="row bg-dark text-white border-dark border-3 border" id="top">
+      <div class="col-sm-3">
+        <h5>
+          <a [href]="" (click)="sortAdverts('description')">Description</a>
+          <span *ngIf="sortType == 'description' && !sortReverse" class="fa fa-caret-down offset-1"></span>
+          <span *ngIf="sortType == 'description' && sortReverse" class="fa fa-caret-up offset-1"></span>
+        </h5>
+      </div>
+      <div class="col-sm-1">
+        <h5>
+          Picture
+        </h5>
+      </div>
+      <div class="col-sm-2">
+        <h5>
+          <a [href]="" (click)="sortAdverts('price_sort')">Price</a>
+          <span *ngIf="sortType == 'price_sort' && !sortReverse" class="fa fa-caret-down offset-1"></span>
+          <span *ngIf="sortType == 'price_sort' && sortReverse" class="fa fa-caret-up offset-1"></span>
+        </h5>
+      </div>
+      <div class="col-sm-2">
+        <h5>
+          <a [href]="" (click)="sortAdverts('location')">Location</a>
+          <span *ngIf="sortType == 'location' && !sortReverse" class="fa fa-caret-down offset-1"></span>
+          <span *ngIf="sortType == 'location' && sortReverse" class="fa fa-caret-up offset-1"></span>
+        </h5>
+      </div>
+      <div class="col-sm-1">
+        <h5>
+          <a [href]="" (click)="sortAdverts('date_sort')">Date</a>
+          <span *ngIf="sortType == 'date_sort' && !sortReverse" class="fa fa-caret-down offset-1"></span>
+          <span *ngIf="sortType == 'date_sort' && sortReverse" class="fa fa-caret-up offset-1"></span>
+        </h5>
+      </div>
+      <div class="col-sm-1">
+        <h5>
+          <a [href]="" (click)="sortAdverts('size')">Size</a>
+          <span *ngIf="sortType == 'size' && !sortReverse" class="fa fa-caret-down offset-1"></span>
+          <span *ngIf="sortType == 'size' && sortReverse" class="fa fa-caret-up offset-1"></span>
+        </h5>
+      </div>
+      <div class="col-sm-2">
+        <h5>
+          <a [href]="" (click)="sortAdverts('heating')">Heating</a>
+          <span *ngIf="sortType == 'heating' && !sortReverse" class="fa fa-caret-down offset-1"></span>
+          <span *ngIf="sortType == 'heating' && sortReverse" class="fa fa-caret-up offset-1"></span>
+        </h5>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container legend" *ngIf="filteredAdverts">
+  <div class="row border-top border-left border-right border-dark border-3 justify-content-center align-self-center" *ngFor="let advert of filteredAdverts">
+    <div class="col-sm-3 table-bordered">
+      <a target="_blank" href="{{ advert.advertLink }}">{{ advert.description }}</a>
+    </div>
+    <div class="col-sm-1 table-bordered nopadding text-center">
+      <img *ngIf="advert.thumbnailLink" width="120" height="90" src="{{ advert.thumbnailLink }}" />
+    </div>
+    <div class="col-sm-2 table-bordered text-center">
+      {{ advert.price }}
+    </div>
+    <div class="col-sm-2 table-bordered text-center">
+      {{ advert.location }}
+    </div>
+    <div class="col-sm-1 table-bordered text-center">
+      {{ advert.advertDate }}
+    </div>
+    <div class="col-sm-1 table-bordered text-center">
+      {{ advert.size }}
+    </div>
+    <div class="col-sm-2 table-bordered text-center">
+      {{ advert.heating }}
+    </div>
+  </div>
+  <div class="row border-top border-dark border-3"></div>
+</div>
+<br />

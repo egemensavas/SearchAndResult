@@ -15,17 +15,11 @@ namespace Viewer_ASP.NET_Core.Controllers
     public class APIController : Controller
     {
         [HttpGet]
-        public IEnumerable<AdvertModel> FillDataToScreen([FromQuery] int SearchMasterID, [FromQuery] string SortOrder)
+        public IEnumerable<AdvertModel> FillDataToScreen([FromQuery] int SearchMasterID)
         {
-            ViewData["PriceSortParm"] = SortOrder == "price" ? "price_desc" : "price";
             List<AdvertModel> result_ = new List<AdvertModel>();
             GeneralClass cls = new GeneralClass();
-            IEnumerable<TABLE_ADVERT> Adverts = SortOrder switch
-            {
-                "price" => cls.GetAdvertData(SearchMasterID).OrderBy(x => x.Price),
-                "price_desc" => cls.GetAdvertData(SearchMasterID).OrderByDescending(x => x.Price),
-                _ => cls.GetAdvertData(SearchMasterID).OrderByDescending(x => x.CreateDate),
-            };
+            IEnumerable<TABLE_ADVERT> Adverts = cls.GetAdvertData(SearchMasterID);
             foreach (var advert in Adverts)
             {
                 AdvertModel x = new AdvertModel
@@ -34,11 +28,14 @@ namespace Viewer_ASP.NET_Core.Controllers
                     Description = advert.Description,
                     ThumbnailLink = advert.ThumbnailLink,
                     Location = advert.Location,
-                    AdvertDate = String.Format("{0:dd/MM/yyyy}", advert.AdvertDate),
+                    AdvertDate = String.Format("{0:dd/MM/yy}", advert.AdvertDate),
                     Price = String.Format("{0:n0}", advert.Price) + " TL",
                     Size = advert.Size.ToString(),
                     Room = advert.Room,
-                    Heating = advert.Heating
+                    Heating = advert.Heating,
+                    Price_sort = advert.Price,
+                    SearchMasterID = advert.SearchMasterID,
+                    Date_sort = advert.AdvertDate.Ticks
                 };
                 result_.Add(x);
             }
