@@ -25,6 +25,11 @@ namespace Scrapper_Windows_Service
             RealEstate = 2,
             Car = 3
         }
+
+        internal double GetInterval()
+        {
+            return Convert.ToDouble(System.Configuration.ConfigurationManager.AppSettings["Interval"]);
+        }
         #endregion
 
         #region Constructors

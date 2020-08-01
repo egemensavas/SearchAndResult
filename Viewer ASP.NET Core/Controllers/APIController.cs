@@ -43,6 +43,26 @@ namespace Viewer_ASP.NET_Core.Controllers
         }
 
         [HttpGet]
+        public IEnumerable<SearchMasterModel> FillSearchComboData()
+        {
+            List<SearchMasterModel> result_ = new List<SearchMasterModel>();
+            GeneralClass cls = new GeneralClass();
+            IEnumerable<VIEW_SEARCHMASTER> SearchMasters = cls.GetSearchMasterData();
+            foreach (var searchMaster in SearchMasters)
+            {
+                SearchMasterModel x = new SearchMasterModel
+                {
+                    ID = searchMaster.ID,
+                    Description = searchMaster.Description,
+                    Notes = searchMaster.Notes,
+                    RecordCount = Convert.ToInt32(searchMaster.RecordCount)
+                };
+                result_.Add(x);
+            }
+            return result_;
+        }
+
+        [HttpGet]
         public void SendNotification([FromQuery] int SearchMasterID)
         {
             GeneralClass cls = new GeneralClass();

@@ -1,5 +1,5 @@
-import { Component, Inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Component, ElementRef, ViewChild  } from '@angular/core';
+import { DataService } from '../data.service';
 
 @Component({
   selector: 'app-home',
@@ -8,20 +8,25 @@ import { HttpClient } from '@angular/common/http';
 })
 export class HomeComponent implements OnInit {
   public Adverts: AdvertModel[];
+  public SearchMasters: SearchMasterModel[];
   public filteredAdverts: AdvertModel[];
   sortType: string;
   sortReverse: boolean = false;
 
-  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
-    http.get<AdvertModel[]>(baseUrl + 'API/FillDataToScreen?SearchMasterID=0').subscribe(result => {
-      this.Adverts = result;
-      //console.log(result);
-    }, error => console.error(error));
-    this.filteredAdverts = this.Adverts;
-  }
+  constructor(private dataService: DataService) { }
 
   ngOnInit() {
-    this.filteredAdverts = this.Adverts;
+    this.dataService.sendGetRequest("API/FillDataToScreen?SearchMasterID=0").subscribe((data: any[]) => {
+      console.log(data);
+      this.Adverts = data;
+      this.filteredAdverts = this.Adverts;
+      this.sortAdverts("date_sort");
+    });
+    this.dataService.sendGetRequest("API/FillSearchComboData").subscribe((data: any[]) => {
+      console.log(data);
+      this.SearchMasters = data;
+      this.sortSearchMasters("description");
+    })
   }
 
   sortAdverts(property) {
@@ -30,13 +35,18 @@ export class HomeComponent implements OnInit {
     this.filteredAdverts.sort(this.dynamicSort(property));
   }
 
+  sortSearchMasters(property) {
+    this.sortType = property;
+    this.sortReverse = !this.sortReverse;
+    this.SearchMasters.sort(this.dynamicSort(property));
+  }
+
   dynamicSort(property) {
     let sortOrder = -1;
 
     if (this.sortReverse) {
       sortOrder = 1;
     }
-
     return function (a, b) {
       let result = a[property] < b[property] ? -1 : a[property] > b[property] ? 1 : 0;
       return result * sortOrder;
@@ -45,7 +55,7 @@ export class HomeComponent implements OnInit {
 
   onChangeEvent(ev) {
     this.filterAdverts(ev.target.value, "");
-    this.sortAdverts("price");
+    this.sortAdverts("date_sort");
   }
 
   filterAdverts(selectedID: number, search: string) {
@@ -55,9 +65,9 @@ export class HomeComponent implements OnInit {
       this.filteredAdverts = this.Adverts.filter(o =>
         Object.keys(o).some(k => {
           if (typeof o[k] === 'string')
-            return o[k].toLowerCase().includes(search.toLowerCase());
+            return o[k].toLowerCase().includes(search.toLowerCase())
         })
-      );
+      )
   }
 }
 
@@ -76,7 +86,13 @@ interface AdvertModel {
   Date_sort: number;
 }
 
+interface SearchMasterModel {
+  ID: number;
+  Description: string;
+  Notes: string;
+  RecordCount: number;
+}
+
 interface OnInit {
   ngOnInit(): void
 }
-

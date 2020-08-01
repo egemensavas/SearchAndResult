@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccessLayer
 {
@@ -13,9 +10,15 @@ namespace DataAccessLayer
         public IEnumerable<TABLE_ADVERT> GetAdvertData(int SearchMasterID)
         {
             SAHIBINDENDBEntities entities = new SAHIBINDENDBEntities();
-            if(SearchMasterID == 0)
+            if (SearchMasterID == 0)
                 return entities.TABLE_ADVERT.ToList<TABLE_ADVERT>();
             return entities.TABLE_ADVERT.Where(x => x.SearchMasterID == SearchMasterID && x.IsDeleted == false).ToList<TABLE_ADVERT>();
+        }
+
+        public IEnumerable<VIEW_SEARCHMASTER> GetSearchMasterData()
+        {
+            SAHIBINDENDBEntities entities = new SAHIBINDENDBEntities();
+            return entities.VIEW_SEARCHMASTER.ToList<VIEW_SEARCHMASTER>();
         }
 
         public string NotificationMessage(int SearchMasterID)

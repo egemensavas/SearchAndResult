@@ -33,6 +33,7 @@ namespace DataAccessLayer
         public virtual DbSet<TABLE_SEARCHABLE_TYPE> TABLE_SEARCHABLE_TYPE { get; set; }
         public virtual DbSet<VIEW_NOTIFICATION> VIEW_NOTIFICATION { get; set; }
         public virtual DbSet<TABLE_ADVERT_TYPE> TABLE_ADVERT_TYPE { get; set; }
+        public virtual DbSet<VIEW_SEARCHMASTER> VIEW_SEARCHMASTER { get; set; }
     
         public virtual ObjectResult<Nullable<int>> SP_GETSEARCHURL(Nullable<int> iD, Nullable<int> pAGE)
         {

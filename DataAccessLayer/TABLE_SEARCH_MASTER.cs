@@ -25,6 +25,7 @@ namespace DataAccessLayer
         public string Description { get; set; }
         public string Notes { get; set; }
         public int AdvertTypeID { get; set; }
+        public bool IsActive { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TABLE_ADVERT> TABLE_ADVERT { get; set; }

@@ -17,10 +17,11 @@ namespace Scrapper_Windows_Service
             HelperClass.LogWriter("Started");
             try
             {
+                HelperClass.LogWriter(HelperClass.GetInterval().ToString());
                 HelperClass.DoTheThing();
                 System.Timers.Timer aTimer = new System.Timers.Timer();
                 aTimer.Elapsed += new System.Timers.ElapsedEventHandler(OnTimedEvent);
-                aTimer.Interval = 180000;
+                aTimer.Interval = HelperClass.GetInterval();
                 aTimer.Enabled = true;
                 aTimer.Start();
             }

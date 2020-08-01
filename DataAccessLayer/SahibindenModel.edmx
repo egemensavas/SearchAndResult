@@ -48,6 +48,7 @@
           <Property Name="Description" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="Notes" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="AdvertTypeID" Type="int" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="TABLE_SEARCHABLE_TYPE">
           <Key>
@@ -66,6 +67,21 @@ warning 6002: The table/view 'SAHIBINDENDB.dbo.VIEW_NOTIFICATION' does not have 
           <Property Name="NotificationMessage" Type="varchar" MaxLength="22" Nullable="false" />
           <Property Name="SearchMasterID" Type="int" Nullable="false" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'SAHIBINDENDB.dbo.VIEW_SEARCHMASTER' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="VIEW_SEARCHMASTER">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Description" />
+            <PropertyRef Name="Notes" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Notes" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="RecordCount" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'SAHIBINDENDB.sys.database_firewall_rules' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <Association Name="FK_TABLE_SEARCH_DETAIL_TABLE_SEARCH_MASTER">
           <End Role="TABLE_SEARCH_MASTER" Type="Self.TABLE_SEARCH_MASTER" Multiplicity="1" />
           <End Role="TABLE_SEARCH_DETAIL" Type="Self.TABLE_SEARCH_DETAIL" Multiplicity="*" />
@@ -117,6 +133,14 @@ warning 6002: The table/view 'SAHIBINDENDB.dbo.VIEW_NOTIFICATION' does not have 
     [VIEW_NOTIFICATION].[NotificationMessage] AS [NotificationMessage], 
     [VIEW_NOTIFICATION].[SearchMasterID] AS [SearchMasterID]
     FROM [dbo].[VIEW_NOTIFICATION] AS [VIEW_NOTIFICATION]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="VIEW_SEARCHMASTER" EntityType="Self.VIEW_SEARCHMASTER" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [VIEW_SEARCHMASTER].[ID] AS [ID], 
+    [VIEW_SEARCHMASTER].[Description] AS [Description], 
+    [VIEW_SEARCHMASTER].[Notes] AS [Notes], 
+    [VIEW_SEARCHMASTER].[RecordCount] AS [RecordCount]
+    FROM [dbo].[VIEW_SEARCHMASTER] AS [VIEW_SEARCHMASTER]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK_TABLE_SEARCH_DETAIL_TABLE_SEARCH_MASTER" Association="Self.FK_TABLE_SEARCH_DETAIL_TABLE_SEARCH_MASTER">
             <End Role="TABLE_SEARCH_MASTER" EntitySet="TABLE_SEARCH_MASTER" />
@@ -177,6 +201,7 @@ warning 6002: The table/view 'SAHIBINDENDB.dbo.VIEW_NOTIFICATION' does not have 
           <NavigationProperty Name="TABLE_SEARCH_DETAIL" Relationship="Self.FK_TABLE_SEARCH_DETAIL_TABLE_SEARCH_MASTER" FromRole="TABLE_SEARCH_MASTER" ToRole="TABLE_SEARCH_DETAIL" />
           <Property Name="AdvertTypeID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="TABLE_ADVERT_TYPE" Relationship="SAHIBINDENDBModel.FK_TABLE_SEARCH_MASTER_TABLE_ADVERT_TYPE" FromRole="TABLE_SEARCH_MASTER" ToRole="TABLE_ADVERT_TYPE" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="TABLE_SEARCHABLE_TYPE">
           <Key>
@@ -249,6 +274,7 @@ warning 6002: The table/view 'SAHIBINDENDB.dbo.VIEW_NOTIFICATION' does not have 
             <End Role="TABLE_ADVERT_TYPE" EntitySet="TABLE_ADVERT_TYPE" />
             <End Role="TABLE_SEARCH_MASTER" EntitySet="TABLE_SEARCH_MASTER" />
           </AssociationSet>
+          <EntitySet Name="VIEW_SEARCHMASTER" EntityType="SAHIBINDENDBModel.VIEW_SEARCHMASTER" />
         </EntityContainer>
         <EntityType Name="VIEW_NOTIFICATION">
           <Key>
@@ -278,6 +304,17 @@ warning 6002: The table/view 'SAHIBINDENDB.dbo.VIEW_NOTIFICATION' does not have 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="VIEW_SEARCHMASTER">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Description" />
+            <PropertyRef Name="Notes" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Notes" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="RecordCount" Type="Int32" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -317,6 +354,7 @@ warning 6002: The table/view 'SAHIBINDENDB.dbo.VIEW_NOTIFICATION' does not have 
           <EntitySetMapping Name="TABLE_SEARCH_MASTER">
             <EntityTypeMapping TypeName="SAHIBINDENDBModel.TABLE_SEARCH_MASTER">
               <MappingFragment StoreEntitySet="TABLE_SEARCH_MASTER">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="AdvertTypeID" ColumnName="AdvertTypeID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
@@ -344,6 +382,16 @@ warning 6002: The table/view 'SAHIBINDENDB.dbo.VIEW_NOTIFICATION' does not have 
           <EntitySetMapping Name="TABLE_ADVERT_TYPE">
             <EntityTypeMapping TypeName="SAHIBINDENDBModel.TABLE_ADVERT_TYPE">
               <MappingFragment StoreEntitySet="TABLE_ADVERT_TYPE">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VIEW_SEARCHMASTER">
+            <EntityTypeMapping TypeName="SAHIBINDENDBModel.VIEW_SEARCHMASTER">
+              <MappingFragment StoreEntitySet="VIEW_SEARCHMASTER">
+                <ScalarProperty Name="RecordCount" ColumnName="RecordCount" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>

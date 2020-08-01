@@ -15,14 +15,10 @@
         </ul>
       </div>
       <div class="col-sm-6">
-        <form>
-          <select name="searchCriterias" class="custom-select" (change)="onChangeEvent($event)">
-            <option value="0" selected>Search Criteria Selection</option>
-            <option value="1">Canon Camera</option>
-            <option value="2">Mehtap Emlak Kartal</option>
-            <option value="3">Mehtap Emlak Maltepe</option>
-          </select>
-        </form>
+        <select name="searchCriterias" class="custom-select" (change)="onChangeEvent($event)">
+          <option value="0" selected>Search Criteria Selection</option>
+          <option value="{{ searchMaster.iD }}" *ngFor="let searchMaster of SearchMasters">{{ searchMaster.description }} ({{ searchMaster.recordCount }})</option>
+        </select>
       </div>
       <div class="col-sm-3">
         <input #advertsFilter type="text" class="form-control" placeholder="Filter Adverts" (keyup)="filterAdverts(1, advertsFilter.value)">

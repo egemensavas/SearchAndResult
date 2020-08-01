@@ -42,6 +42,7 @@
     <NavigationProperty Name="TABLE_SEARCH_DETAIL" Relationship="Self.FK_TABLE_SEARCH_DETAIL_TABLE_SEARCH_MASTER" FromRole="TABLE_SEARCH_MASTER" ToRole="TABLE_SEARCH_DETAIL" />
     <Property Name="AdvertTypeID" Type="Int32" Nullable="false" />
     <NavigationProperty Name="TABLE_ADVERT_TYPE" Relationship="SAHIBINDENDBModel.FK_TABLE_SEARCH_MASTER_TABLE_ADVERT_TYPE" FromRole="TABLE_SEARCH_MASTER" ToRole="TABLE_ADVERT_TYPE" />
+    <Property Name="IsActive" Type="Boolean" Nullable="false" />
   </EntityType>
   <EntityType Name="TABLE_SEARCHABLE_TYPE">
     <Key>
@@ -114,6 +115,7 @@
       <End Role="TABLE_ADVERT_TYPE" EntitySet="TABLE_ADVERT_TYPE" />
       <End Role="TABLE_SEARCH_MASTER" EntitySet="TABLE_SEARCH_MASTER" />
     </AssociationSet>
+    <EntitySet Name="VIEW_SEARCHMASTER" EntityType="SAHIBINDENDBModel.VIEW_SEARCHMASTER" />
   </EntityContainer>
   <EntityType Name="VIEW_NOTIFICATION">
     <Key>
@@ -143,4 +145,15 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <EntityType Name="VIEW_SEARCHMASTER">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="Description" />
+      <PropertyRef Name="Notes" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="Description" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Notes" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="RecordCount" Type="Int32" />
+  </EntityType>
 </Schema>

@@ -86,6 +86,9 @@
     <Compile Include="VIEW_NOTIFICATION.cs">
       <DependentUpon>SahibindenModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="VIEW_SEARCHMASTER.cs">
+      <DependentUpon>SahibindenModel.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EntityDeploy Include="SahibindenModel.edmx">
