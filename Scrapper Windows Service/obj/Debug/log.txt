@@ -133,3 +133,123 @@ Log Entry : 11:04:39 PM Saturday, August 1, 2020
   :
   :TickEnd
 -------------------------------
+
+Log Entry : 11:07:39 PM Saturday, August 1, 2020
+  :
+  :TickStart
+-------------------------------
+
+Log Entry : 11:07:47 PM Saturday, August 1, 2020
+  :
+  :Done in 8 seconds.
+-------------------------------
+
+Log Entry : 11:07:47 PM Saturday, August 1, 2020
+  :
+  :TickEnd
+-------------------------------
+
+Log Entry : 11:10:39 PM Saturday, August 1, 2020
+  :
+  :TickStart
+-------------------------------
+
+Log Entry : 11:10:50 PM Saturday, August 1, 2020
+  :
+  :Done in 11 seconds.
+-------------------------------
+
+Log Entry : 11:10:50 PM Saturday, August 1, 2020
+  :
+  :TickEnd
+-------------------------------
+
+Log Entry : 11:13:39 PM Saturday, August 1, 2020
+  :
+  :TickStart
+-------------------------------
+
+Log Entry : 11:13:47 PM Saturday, August 1, 2020
+  :
+  :Done in 8 seconds.
+-------------------------------
+
+Log Entry : 11:13:47 PM Saturday, August 1, 2020
+  :
+  :TickEnd
+-------------------------------
+
+Log Entry : 11:16:39 PM Saturday, August 1, 2020
+  :
+  :TickStart
+-------------------------------
+
+Log Entry : 11:16:39 PM Saturday, August 1, 2020
+  :
+  :We are banned :)
+-------------------------------
+
+Log Entry : 11:16:39 PM Saturday, August 1, 2020
+  :
+  :TickEnd
+-------------------------------
+
+Log Entry : 11:19:39 PM Saturday, August 1, 2020
+  :
+  :TickStart
+-------------------------------
+
+Log Entry : 11:19:57 PM Saturday, August 1, 2020
+  :
+  :Done in 18 seconds.
+-------------------------------
+
+Log Entry : 11:19:57 PM Saturday, August 1, 2020
+  :
+  :TickEnd
+-------------------------------
+
+Log Entry : 11:22:39 PM Saturday, August 1, 2020
+  :
+  :TickStart
+-------------------------------
+
+Log Entry : 11:22:47 PM Saturday, August 1, 2020
+  :
+  :Done in 8 seconds.
+-------------------------------
+
+Log Entry : 11:22:47 PM Saturday, August 1, 2020
+  :
+  :TickEnd
+-------------------------------
+
+Log Entry : 11:25:39 PM Saturday, August 1, 2020
+  :
+  :TickStart
+-------------------------------
+
+Log Entry : 11:25:49 PM Saturday, August 1, 2020
+  :
+  :We are banned :)
+-------------------------------
+
+Log Entry : 11:25:49 PM Saturday, August 1, 2020
+  :
+  :TickEnd
+-------------------------------
+
+Log Entry : 11:28:39 PM Saturday, August 1, 2020
+  :
+  :TickStart
+-------------------------------
+
+Log Entry : 11:28:39 PM Saturday, August 1, 2020
+  :
+  :We are banned :)
+-------------------------------
+
+Log Entry : 11:28:39 PM Saturday, August 1, 2020
+  :
+  :TickEnd
+-------------------------------

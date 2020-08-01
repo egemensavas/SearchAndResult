@@ -17,11 +17,11 @@
       <div class="col-sm-6">
         <select name="searchCriterias" class="custom-select" (change)="onChangeEvent($event)">
           <option value="0" selected>Search Criteria Selection</option>
-          <option value="{{ searchMaster.iD }}" *ngFor="let searchMaster of SearchMasters">{{ searchMaster.description }} ({{ searchMaster.recordCount }})</option>
+          <option value="{{ searchMaster.id }}" *ngFor="let searchMaster of SearchMasters">{{ searchMaster.description }} ({{ searchMaster.recordCount }})</option>
         </select>
       </div>
       <div class="col-sm-3">
-        <input #advertsFilter type="text" class="form-control" placeholder="Filter Adverts" (keyup)="filterAdverts(1, advertsFilter.value)">
+        <input #advertsFilter type="text" class="form-control" placeholder="Filter Adverts" (keyup)="keyUpEvent(advertsFilter.value)">
       </div>
     </div>
   </div>

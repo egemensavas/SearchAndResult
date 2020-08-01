@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild  } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { DataService } from '../data.service';
 
 @Component({
@@ -12,6 +12,8 @@ export class HomeComponent implements OnInit {
   public filteredAdverts: AdvertModel[];
   sortType: string;
   sortReverse: boolean = false;
+  chosenSearchMasterID: number;
+  chosenTextInput: string;
 
   constructor(private dataService: DataService) { }
 
@@ -21,6 +23,8 @@ export class HomeComponent implements OnInit {
       this.Adverts = data;
       this.filteredAdverts = this.Adverts;
       this.sortAdverts("date_sort");
+      if (this.sortReverse)
+        this.sortAdverts("date_sort");
     });
     this.dataService.sendGetRequest("API/FillSearchComboData").subscribe((data: any[]) => {
       console.log(data);
@@ -54,20 +58,27 @@ export class HomeComponent implements OnInit {
   }
 
   onChangeEvent(ev) {
-    this.filterAdverts(ev.target.value, "");
+    this.chosenSearchMasterID = ev.target.value;
+    this.filterAdverts(this.chosenSearchMasterID, this.chosenTextInput);
     this.sortAdverts("date_sort");
   }
 
   filterAdverts(selectedID: number, search: string) {
+    this.filteredAdverts = this.Adverts
     if (selectedID > 0)
       this.filteredAdverts = this.Adverts.filter(o => o.searchMasterID == selectedID)
     if (search != "")
-      this.filteredAdverts = this.Adverts.filter(o =>
+      this.filteredAdverts = this.filteredAdverts.filter(o =>
         Object.keys(o).some(k => {
           if (typeof o[k] === 'string')
             return o[k].toLowerCase().includes(search.toLowerCase())
         })
       )
+  }
+
+  keyUpEvent(input: string) {
+    this.chosenTextInput = input;
+    this.filterAdverts(this.chosenSearchMasterID, this.chosenTextInput)
   }
 }
 
