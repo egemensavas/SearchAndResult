@@ -43,6 +43,7 @@
     <Property Name="Description" Type="nvarchar" MaxLength="200" Nullable="false" />
     <Property Name="Notes" Type="nvarchar" MaxLength="200" Nullable="false" />
     <Property Name="AdvertTypeID" Type="int" Nullable="false" />
+    <Property Name="IsActive" Type="bit" Nullable="false" />
   </EntityType>
   <EntityType Name="TABLE_SEARCHABLE_TYPE">
     <Key>
@@ -61,6 +62,21 @@ warning 6002: The table/view 'SAHIBINDENDB.dbo.VIEW_NOTIFICATION' does not have 
     <Property Name="NotificationMessage" Type="varchar" MaxLength="22" Nullable="false" />
     <Property Name="SearchMasterID" Type="int" Nullable="false" />
   </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'SAHIBINDENDB.dbo.VIEW_SEARCHMASTER' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="VIEW_SEARCHMASTER">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="Description" />
+      <PropertyRef Name="Notes" />
+    </Key>
+    <Property Name="ID" Type="int" Nullable="false" />
+    <Property Name="Description" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="Notes" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="RecordCount" Type="int" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'SAHIBINDENDB.sys.database_firewall_rules' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
   <Association Name="FK_TABLE_SEARCH_DETAIL_TABLE_SEARCH_MASTER">
     <End Role="TABLE_SEARCH_MASTER" Type="Self.TABLE_SEARCH_MASTER" Multiplicity="1" />
     <End Role="TABLE_SEARCH_DETAIL" Type="Self.TABLE_SEARCH_DETAIL" Multiplicity="*" />
@@ -112,6 +128,14 @@ warning 6002: The table/view 'SAHIBINDENDB.dbo.VIEW_NOTIFICATION' does not have 
     [VIEW_NOTIFICATION].[NotificationMessage] AS [NotificationMessage], 
     [VIEW_NOTIFICATION].[SearchMasterID] AS [SearchMasterID]
     FROM [dbo].[VIEW_NOTIFICATION] AS [VIEW_NOTIFICATION]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="VIEW_SEARCHMASTER" EntityType="Self.VIEW_SEARCHMASTER" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [VIEW_SEARCHMASTER].[ID] AS [ID], 
+    [VIEW_SEARCHMASTER].[Description] AS [Description], 
+    [VIEW_SEARCHMASTER].[Notes] AS [Notes], 
+    [VIEW_SEARCHMASTER].[RecordCount] AS [RecordCount]
+    FROM [dbo].[VIEW_SEARCHMASTER] AS [VIEW_SEARCHMASTER]</DefiningQuery>
     </EntitySet>
     <AssociationSet Name="FK_TABLE_SEARCH_DETAIL_TABLE_SEARCH_MASTER" Association="Self.FK_TABLE_SEARCH_DETAIL_TABLE_SEARCH_MASTER">
       <End Role="TABLE_SEARCH_MASTER" EntitySet="TABLE_SEARCH_MASTER" />
