@@ -5,22 +5,18 @@
 <div class="sticky-top bg-white">
   <div name="navigation" class="container" *ngIf="Adverts">
     <div class="row smallpadding">
-      <div class="col-sm-3">
+      <div class="col-sm-5">
         <ul class="pagination justify-content-center align-self-center">
-          <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-          <li class="page-item"><a class="page-link" href="#">1</a></li>
-          <li class="page-item"><a class="page-link" href="#">2</a></li>
-          <li class="page-item"><a class="page-link" href="#">3</a></li>
-          <li class="page-item"><a class="page-link" href="#">Next</a></li>
+          <li class="page-item" *ngFor="let page of paginateShow" [ngClass]="{'active': page.PageNumber == selectedPageString}"><a class="page-link" [href]="" (click)="fillPaginationShow(page.PageNumber)">{{ page.PageNumber }}</a></li>
         </ul>
       </div>
-      <div class="col-sm-6">
+      <div class="col-sm-5">
         <select name="searchCriterias" class="custom-select" (change)="onChangeEvent($event)">
           <option value="0" selected>Search Criteria Selection</option>
           <option value="{{ searchMaster.id }}" *ngFor="let searchMaster of SearchMasters">{{ searchMaster.description }} ({{ searchMaster.recordCount }})</option>
         </select>
       </div>
-      <div class="col-sm-3">
+      <div class="col-sm-2">
         <input #advertsFilter type="text" class="form-control" placeholder="Filter Adverts" (keyup)="keyUpEvent(advertsFilter.value)">
       </div>
     </div>
@@ -63,12 +59,19 @@
       </div>
       <div class="col-sm-1">
         <h5>
+          <a [href]="" (click)="sortAdverts('room')">Room</a>
+          <span *ngIf="sortType == 'room' && !sortReverse" class="fa fa-caret-down offset-1"></span>
+          <span *ngIf="sortType == 'room' && sortReverse" class="fa fa-caret-up offset-1"></span>
+        </h5>
+      </div>
+      <div class="col-sm-1">
+        <h5>
           <a [href]="" (click)="sortAdverts('size')">Size</a>
           <span *ngIf="sortType == 'size' && !sortReverse" class="fa fa-caret-down offset-1"></span>
           <span *ngIf="sortType == 'size' && sortReverse" class="fa fa-caret-up offset-1"></span>
         </h5>
       </div>
-      <div class="col-sm-2">
+      <div class="col-sm-1">
         <h5>
           <a [href]="" (click)="sortAdverts('heating')">Heating</a>
           <span *ngIf="sortType == 'heating' && !sortReverse" class="fa fa-caret-down offset-1"></span>
@@ -79,7 +82,7 @@
   </div>
 </div>
 <div class="container legend" *ngIf="filteredAdverts">
-  <div class="row border-top border-left border-right border-dark border-3 justify-content-center align-self-center" *ngFor="let advert of filteredAdverts">
+  <div class="row border-top border-left border-right border-dark border-3 justify-content-center align-self-center" *ngFor="let advert of paginatedAdverts">
     <div class="col-sm-3 table-bordered">
       <a target="_blank" href="{{ advert.advertLink }}">{{ advert.description }}</a>
     </div>
@@ -96,9 +99,12 @@
       {{ advert.advertDate }}
     </div>
     <div class="col-sm-1 table-bordered text-center">
+      {{ advert.room }}
+    </div>
+    <div class="col-sm-1 table-bordered text-center">
       {{ advert.size }}
     </div>
-    <div class="col-sm-2 table-bordered text-center">
+    <div class="col-sm-1 table-bordered text-center">
       {{ advert.heating }}
     </div>
   </div>

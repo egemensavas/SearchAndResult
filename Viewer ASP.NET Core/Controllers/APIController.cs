@@ -146,9 +146,9 @@ namespace Viewer_ASP.NET_Core.Controllers
                     }
                     else if (siteContent.Contains("forceLoginPageMessage"))
                     {
-                        AutomatedUILogin selenium = new AutomatedUILogin();
-                        selenium.SahibindenLogin();
-                        selenium.Dispose();
+                        //AutomatedUILogin selenium = new AutomatedUILogin();
+                        //selenium.SahibindenLogin();
+                        //selenium.Dispose();
                     }
                     string trimmedSiteContent = HelperClass.TrimHelper(HTMLCriteriaClass.AdvertTrimCriteria, siteContent);
                     result.Add(trimmedSiteContent);
