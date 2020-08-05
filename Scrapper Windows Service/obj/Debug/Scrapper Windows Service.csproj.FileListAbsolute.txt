@@ -4,5 +4,4 @@ C:\Users\egeme\source\repos\SearchAndResult\Scrapper Windows Service\bin\Debug\S
 C:\Users\egeme\source\repos\SearchAndResult\Scrapper Windows Service\obj\Debug\Scrapper Windows Service.csproj.CoreCompileInputs.cache
 C:\Users\egeme\source\repos\SearchAndResult\Scrapper Windows Service\obj\Debug\Scrapper_Windows_Service.exe
 C:\Users\egeme\source\repos\SearchAndResult\Scrapper Windows Service\obj\Debug\Scrapper_Windows_Service.pdb
-C:\Users\egeme\source\repos\SearchAndResult\Scrapper Windows Service\obj\Debug\Scrapper Windows Service.csprojAssemblyReference.cache
 C:\Users\egeme\source\repos\SearchAndResult\Scrapper Windows Service\bin\Debug\App.config

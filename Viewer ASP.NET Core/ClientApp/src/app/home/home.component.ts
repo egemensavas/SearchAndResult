@@ -18,6 +18,7 @@ export class HomeComponent implements OnInit {
   chosenSearchMasterID: number;
   chosenTextInput: string = "";
   public pageSize: number = 8;
+  public paginationSize = 6;
   public selectedPage: number = 1;
   public selectedPageString: string = "1";
 
@@ -42,21 +43,21 @@ export class HomeComponent implements OnInit {
   }
 
   fillPaginationShow(input) {
-    if (input == "First") {
+    if (input == "<<") {
       this.fillPaginationShow(1)
       return
     }
-    if (input == "Last") {
+    if (input == ">>") {
       this.fillPaginationShow(this.paginateBase.length)
       return
     }
-    if (input == "Previous") {
+    if (input == "<") {
       if (this.selectedPage > 1)
         this.fillPaginationShow(this.selectedPage - 1)
       return
     }
 
-    if (input == "Next") {
+    if (input == ">") {
       if (this.selectedPage < this.paginateBase.length)
         this.fillPaginationShow(this.selectedPage + 1)
       return
@@ -65,12 +66,12 @@ export class HomeComponent implements OnInit {
     this.selectedPageString = this.selectedPage.toString()
     this.paginateShow = []
     var x: PaginateModel
-    x = { PageNumber: "First" }
+    x = { PageNumber: "<<" }
     this.paginateShow.push(x)
-    x = { PageNumber: "Previous" }
+    x = { PageNumber: "<" }
     this.paginateShow.push(x)
 
-    let lastPage: number = 5
+    let lastPage: number = this.paginationSize
     if (this.paginateBase.length < lastPage)
       lastPage = this.paginateBase.length
 
@@ -100,9 +101,9 @@ export class HomeComponent implements OnInit {
       }
     }
 
-    x = { PageNumber: "Next" }
+    x = { PageNumber: ">" }
     this.paginateShow.push(x)
-    x = { PageNumber: "Last" }
+    x = { PageNumber: ">>" }
     this.paginateShow.push(x)
 
     this.doPaginate()

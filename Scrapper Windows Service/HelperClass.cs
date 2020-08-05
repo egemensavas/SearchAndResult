@@ -349,23 +349,23 @@ namespace Scrapper_Windows_Service
 
         public void SendNotification(int SearchMasterID)
         {
-            string Message = NotificationMessage(SearchMasterID);
+            NotificationMessage(SearchMasterID, out string Message, out string Segment);
             if (!string.IsNullOrEmpty(Message))
             {
-                OneSignalCall(Message);
+                OneSignalCall(Message, Segment);
                 UpdateSeen(SearchMasterID);
             }
         }
 
-        public void OneSignalCall(string Message)
+        public void OneSignalCall(string Message, string Segment)
         {
             string URL = "https://onesignal.com/api/v1/notifications";
             string DATA = @"{
                                 ""app_id"": ""708d286a-e547-4c5c-8575-5cc801c4096b"",
-                                ""included_segments"": [""All""],
+                                ""included_segments"": [""" + Segment + @"""],
                                 ""contents"": {""en"": """ + HttpUtility.UrlDecode(Message) + @"""}
                             }";
-
+            LogWriter(DATA);
             var request = (HttpWebRequest)WebRequest.Create(URL);
             request.Method = "POST";
             request.ContentType = "application/json";
@@ -381,11 +381,19 @@ namespace Scrapper_Windows_Service
             var result_ = streamReader.ReadToEnd();
         }
 
-        public string NotificationMessage(int SearchMasterID)
+        public void NotificationMessage(int SearchMasterID, out string Message, out string Segment)
         {
-            string SQLCommand = "SELECT NotificationMessage FROM VIEW_NOTIFICATION WHERE SEARCHMASTERID = " + SearchMasterID;
-            string result = SQLClass.GetSingleCellDataComplex(SQLCommand);
-            return result;
+            Message = "";
+            Segment = "";
+            string SQLCommand = "SELECT NotificationMessage, Segment FROM VIEW_NOTIFICATION WHERE SEARCHMASTERID = " + SearchMasterID;
+            DataTable DataTable = SQLClass.GetDataTable(SQLCommand, out string Error);
+            if (DataTable.Rows.Count > 0)
+            { 
+                Message = DataTable.Rows[0]["NotificationMessage"].ToString();
+                Segment = DataTable.Rows[0]["Segment"].ToString();
+                LogWriter("Message: " + Message);
+                LogWriter("Segment: " + Segment);
+            }
         }
 
         public string UpdateSeen(int SearchMasterID)
