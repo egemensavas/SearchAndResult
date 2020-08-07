@@ -1,5 +1,7 @@
+@import url('https://fonts.googleapis.com/css?family=Lobster:300,400');
+@import url('https://fonts.googleapis.com/css?family=Bebas+Neue:300,400');
+@import url('https://fonts.googleapis.com/css?family=Ropa+Sans:300,400');
 /* You can add global styles to this file, and also import other style files */
-
 /* Provide sufficient contrast against white background */
 a {
   color: #0366d6;
@@ -44,11 +46,11 @@ th {
 }
 
 .legend .row:nth-of-type(odd) div {
-  background-color: aliceblue;
+  background-color: #dae5f4;
 }
 
 .legend .row:nth-of-type(even) div {
-  background: #FFFFFF;
+  background-color: #b8d1e3;
 }
 
 .nopadding {
@@ -59,6 +61,20 @@ th {
 .smallpadding {
   padding: 3px !important;
   margin: 3px !important;
+}
+
+.stylingfortitlefont {
+  font-family: Lobster;
+  color: white;
+  font-size: x-large;
+}
+
+.stylingforheaderfont {
+  font-family: Bebas Neue;
+}
+
+.stylingforcellfont {
+  font-family: Ropa Sans;
 }
 
 @media (max-width:800px) {

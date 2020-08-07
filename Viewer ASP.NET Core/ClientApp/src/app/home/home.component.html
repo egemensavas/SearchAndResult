@@ -3,30 +3,30 @@
 <p *ngIf="!Adverts"><em>Loading...</em></p>
 
 <div class="sticky-top bg-transparent">
-  <div name="navigation" class="container bg-white border-dark border-3 border" *ngIf="Adverts">
+  <div name="navigation" class="container bg-dark border-danger border-3 border" *ngIf="Adverts">
     <div class="row smallpadding">
       <div class="col-sm-5">
         <ul class="pagination justify-content-center align-self-center">
-          <li class="page-item" *ngFor="let page of paginateShow" [ngClass]="{'active': page.PageNumber == selectedPageString}"><a class="page-link" [href]="" (click)="fillPaginationShow(page.PageNumber)">{{ page.PageNumber }}</a></li>
+          <li class="page-item stylingforcellfont" *ngFor="let page of paginateShow" [ngClass]="{'active': page.PageNumber == selectedPageString}"><a class="page-link" [href]="" (click)="fillPaginationShow(page.PageNumber)">{{ page.PageNumber }}</a></li>
         </ul>
       </div>
       <div class="col-sm-5">
-        <select name="searchCriterias" class="custom-select" (change)="onChangeEvent($event)">
+        <select name="searchCriterias" class="custom-select stylingforcellfont" (change)="onChangeEvent($event)">
           <option value="0" selected>Search Criteria Selection</option>
           <option value="{{ searchMaster.id }}" *ngFor="let searchMaster of SearchMasters">{{ searchMaster.description }} ({{ searchMaster.recordCount }})</option>
         </select>
       </div>
       <div class="col-sm-2">
-        <input #advertsFilter type="text" class="form-control" placeholder="Filter Adverts" (keyup)="keyUpEvent(advertsFilter.value)">
+        <input #advertsFilter type="text" class="form-control stylingforcellfont" placeholder="Filter Adverts" (keyup)="keyUpEvent(advertsFilter.value)">
       </div>
     </div>
   </div>
 
-  <div class="container" *ngIf="Adverts">
+  <div class="container stylingforheaderfont" *ngIf="Adverts">
     <div class="row bg-dark text-white border-dark border-3 border" id="top">
       <div class="col-sm-3">
         <h5>
-          <a [href]="" (click)="sortAdverts('description')">Description</a>
+          <a [href]="" (click)="sortAdverts('description', true)">Description</a>
           <span *ngIf="sortType == 'description' && !sortReverse" class="fa fa-caret-down offset-1"></span>
           <span *ngIf="sortType == 'description' && sortReverse" class="fa fa-caret-up offset-1"></span>
         </h5>
@@ -38,42 +38,42 @@
       </div>
       <div class="col-sm-2">
         <h5>
-          <a [href]="" (click)="sortAdverts('price_sort')">Price</a>
+          <a [href]="" (click)="sortAdverts('price_sort', true)">Price</a>
           <span *ngIf="sortType == 'price_sort' && !sortReverse" class="fa fa-caret-down offset-1"></span>
           <span *ngIf="sortType == 'price_sort' && sortReverse" class="fa fa-caret-up offset-1"></span>
         </h5>
       </div>
       <div class="col-sm-2">
         <h5>
-          <a [href]="" (click)="sortAdverts('location')">Location</a>
+          <a [href]="" (click)="sortAdverts('location', true)">Location</a>
           <span *ngIf="sortType == 'location' && !sortReverse" class="fa fa-caret-down offset-1"></span>
           <span *ngIf="sortType == 'location' && sortReverse" class="fa fa-caret-up offset-1"></span>
         </h5>
       </div>
       <div class="col-sm-1">
         <h5>
-          <a [href]="" (click)="sortAdverts('date_sort')">Date</a>
+          <a [href]="" (click)="sortAdverts('date_sort', true)">Date</a>
           <span *ngIf="sortType == 'date_sort' && !sortReverse" class="fa fa-caret-down offset-1"></span>
           <span *ngIf="sortType == 'date_sort' && sortReverse" class="fa fa-caret-up offset-1"></span>
         </h5>
       </div>
       <div class="col-sm-1">
         <h5>
-          <a [href]="" (click)="sortAdverts('room')">Room</a>
+          <a [href]="" (click)="sortAdverts('room', true)">Room</a>
           <span *ngIf="sortType == 'room' && !sortReverse" class="fa fa-caret-down offset-1"></span>
           <span *ngIf="sortType == 'room' && sortReverse" class="fa fa-caret-up offset-1"></span>
         </h5>
       </div>
       <div class="col-sm-1">
         <h5>
-          <a [href]="" (click)="sortAdverts('size')">Size</a>
+          <a [href]="" (click)="sortAdverts('size', true)">Size</a>
           <span *ngIf="sortType == 'size' && !sortReverse" class="fa fa-caret-down offset-1"></span>
           <span *ngIf="sortType == 'size' && sortReverse" class="fa fa-caret-up offset-1"></span>
         </h5>
       </div>
       <div class="col-sm-1">
         <h5>
-          <a [href]="" (click)="sortAdverts('heating')">Heating</a>
+          <a [href]="" (click)="sortAdverts('heating', true)">Heating</a>
           <span *ngIf="sortType == 'heating' && !sortReverse" class="fa fa-caret-down offset-1"></span>
           <span *ngIf="sortType == 'heating' && sortReverse" class="fa fa-caret-up offset-1"></span>
         </h5>
@@ -81,7 +81,7 @@
     </div>
   </div>
 </div>
-<div class="container legend" *ngIf="filteredAdverts">
+<div class="container legend stylingforcellfont" *ngIf="filteredAdverts">
   <div class="row border-top border-left border-right border-dark border-3 justify-content-center align-self-center" *ngFor="let advert of paginatedAdverts">
     <div class="col-sm-3 table-bordered">
       <a target="_blank" href="{{ advert.advertLink }}">{{ advert.description }}</a>

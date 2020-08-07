@@ -14,7 +14,7 @@ export class HomeComponent implements OnInit {
   public paginateBase = [] as Array<PaginateModel>
   public paginateShow = [] as Array<PaginateModel>
   sortType: string;
-  sortReverse: boolean = false;
+  sortReverse: boolean = true;
   chosenSearchMasterID: number;
   chosenTextInput: string = "";
   public pageSize: number = 8;
@@ -124,9 +124,7 @@ export class HomeComponent implements OnInit {
       this.filteredAdverts = this.Adverts;
       this.fillPagination()
       this.fillPaginationShow(this.selectedPage)
-      this.sortAdverts("date_sort");
-      if (this.sortReverse)
-        this.sortAdverts("date_sort");
+      this.sortAdverts("date_sort", false);
       this.doPaginate()
     })
   }
@@ -136,9 +134,10 @@ export class HomeComponent implements OnInit {
     this.paginatedAdverts = this.filteredAdverts.slice(startRecord, startRecord + this.pageSize)
   }
 
-  sortAdverts(property) {
+  sortAdverts(property, reverse: boolean) {
     this.sortType = property;
-    this.sortReverse = !this.sortReverse;
+    if (reverse)
+      this.sortReverse = !this.sortReverse;
     this.filteredAdverts.sort(this.dynamicSort(property));
     this.doPaginate()
   }
@@ -163,7 +162,8 @@ export class HomeComponent implements OnInit {
 
   commonMethod() {
     this.filterAdverts(this.chosenSearchMasterID, this.chosenTextInput)
-    this.sortAdverts("date_sort")
+    this.sortReverse = false
+    this.sortAdverts("date_sort", false)
     this.fillPagination()
     this.fillPaginationShow(1)
     this.doPaginate()
