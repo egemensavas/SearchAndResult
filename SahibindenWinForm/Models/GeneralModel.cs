@@ -1,10 +1,27 @@
-﻿using System;
+﻿using MongoDB.Bson;
+using System;
+using System.Collections.Generic;
 using System.Data;
 
 namespace SahibindenWinForm.Models
 {
     public class GeneralModel
     {
+        public enum SearchableTypes
+        {
+            Keywords = 1,
+            Category = 2,
+            Location = 3,
+            Sort = 4,
+            PriceMax = 5
+        }
+        public enum AdvertTypes
+        {
+            Item = 1,
+            RealEstate = 2,
+            Car = 3
+        }
+
         public class SearchCriteria
         {
             public string SearchStart { get; set; }
@@ -42,6 +59,9 @@ namespace SahibindenWinForm.Models
 
         public class ResultModel
         {
+#pragma warning disable IDE1006 // Naming Styles
+            public ObjectId _id { get; set; }
+#pragma warning restore IDE1006 // Naming Styles
             public int Price { get; set; }
             public string Location { get; set; }
             public int AdvertID { get; set; }
@@ -52,6 +72,28 @@ namespace SahibindenWinForm.Models
             public int Size { get; set; }
             public string Room { get; set; }
             public string Heating { get; set; }
+        }
+
+        public class SearchModel
+        {
+#pragma warning disable IDE1006 // Naming Styles
+            public ObjectId _id { get; set; }
+#pragma warning restore IDE1006 // Naming Styles
+            public int SearchID { get; set; }
+            public string Description { get; set; }
+            public string Notes { get; set; }
+            public string AdvertType { get; set; }
+            public bool IsActive { get; set; }
+            public string OneSignalSegment { get; set; }
+            public string OneSignalMessage { get; set; }
+            public List<SearchDetailModel> Detail { get; set; }
+        }
+
+        public class SearchDetailModel
+        {
+            public string SearchableType { get; set; }
+            public string SearchableValue { get; set; }
+
         }
     }
 }

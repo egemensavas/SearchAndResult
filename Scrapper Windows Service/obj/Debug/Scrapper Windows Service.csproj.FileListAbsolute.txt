@@ -5,3 +5,19 @@ C:\Users\egeme\source\repos\SearchAndResult\Scrapper Windows Service\obj\Debug\S
 C:\Users\egeme\source\repos\SearchAndResult\Scrapper Windows Service\obj\Debug\Scrapper_Windows_Service.exe
 C:\Users\egeme\source\repos\SearchAndResult\Scrapper Windows Service\obj\Debug\Scrapper_Windows_Service.pdb
 C:\Users\egeme\source\repos\SearchAndResult\Scrapper Windows Service\bin\Debug\App.config
+C:\Users\egeme\source\repos\SearchAndResult\Scrapper Windows Service\bin\Debug\Gray Matter Scrapper Library.dll
+C:\Users\egeme\source\repos\SearchAndResult\Scrapper Windows Service\bin\Debug\MongoDB.Bson.dll
+C:\Users\egeme\source\repos\SearchAndResult\Scrapper Windows Service\bin\Debug\MongoDB.Driver.dll
+C:\Users\egeme\source\repos\SearchAndResult\Scrapper Windows Service\bin\Debug\MongoDB.Driver.Core.dll
+C:\Users\egeme\source\repos\SearchAndResult\Scrapper Windows Service\bin\Debug\MongoDB.Libmongocrypt.dll
+C:\Users\egeme\source\repos\SearchAndResult\Scrapper Windows Service\bin\Debug\DnsClient.dll
+C:\Users\egeme\source\repos\SearchAndResult\Scrapper Windows Service\bin\Debug\SharpCompress.dll
+C:\Users\egeme\source\repos\SearchAndResult\Scrapper Windows Service\bin\Debug\System.Buffers.dll
+C:\Users\egeme\source\repos\SearchAndResult\Scrapper Windows Service\bin\Debug\Gray Matter Scrapper Library.pdb
+C:\Users\egeme\source\repos\SearchAndResult\Scrapper Windows Service\bin\Debug\Gray Matter Scrapper Library.dll.config
+C:\Users\egeme\source\repos\SearchAndResult\Scrapper Windows Service\bin\Debug\MongoDB.Bson.xml
+C:\Users\egeme\source\repos\SearchAndResult\Scrapper Windows Service\bin\Debug\MongoDB.Driver.xml
+C:\Users\egeme\source\repos\SearchAndResult\Scrapper Windows Service\bin\Debug\MongoDB.Driver.Core.xml
+C:\Users\egeme\source\repos\SearchAndResult\Scrapper Windows Service\bin\Debug\DnsClient.xml
+C:\Users\egeme\source\repos\SearchAndResult\Scrapper Windows Service\bin\Debug\System.Buffers.xml
+C:\Users\egeme\source\repos\SearchAndResult\Scrapper Windows Service\obj\Debug\Scrapper Windows Service.csproj.CopyComplete

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Configuration;
@@ -15,12 +17,6 @@ namespace SahibindenWinForm.Classes
         #region Properties
         readonly SQLClass SQLClass;
         readonly HTMLCriteriaClass HTMLCriteriaClass;
-        enum AdvertType
-        {
-            Item = 1,
-            RealEstate = 2,
-            Car = 3
-        }
         #endregion
 
         #region Constructors
@@ -98,13 +94,11 @@ namespace SahibindenWinForm.Classes
             return result;
         }
 
-        public List<ResultModel> PopulateResultModel(List<string> splittedInput, int AdvertTypeID, int searchMasterID, List<int> advertDBList, out List<int> advertWebList)
+        public List<ResultModel> PopulateResultModel(List<string> splittedInput, AdvertTypes advertType, int searchMasterID, List<ResultModel> advertIDList, out List<int> advertWebList)
         {
             List<ResultModel> ResultModelList = new List<ResultModel>();
             int advertID;
-            AdvertType advertTypeID;
-            advertTypeID = (AdvertType)AdvertTypeID;
-            bool IsReaLEstate = advertTypeID == AdvertType.RealEstate;
+            bool IsReaLEstate = advertType == AdvertTypes.RealEstate;
             advertWebList = new List<int>();
             string AttributesContent;
             List<string> ResultAttribute = new List<string>();
@@ -117,7 +111,7 @@ namespace SahibindenWinForm.Classes
                 }
                 advertID = Convert.ToInt32(GetDataFromSplittedHTML(HTMLCriteriaClass.AdvertIDCriteria, item));
                 advertWebList.Add(advertID);
-                if (!advertDBList.Contains(advertID))
+                if (!advertIDList.Any(n => n.AdvertID == advertID))
                 {
                     ResultModel Addition = new ResultModel
                     {
@@ -138,20 +132,17 @@ namespace SahibindenWinForm.Classes
             return ResultModelList;
         }
 
-        public void MarkAsDeleted(List<int> advertDBList, List<int> advertWebList)
+        public void MarkAsDeleted(List<ResultModel> advertDBList, List<int> advertWebList, IMongoCollection<BsonDocument> Collection)
         {
-            string SQLCommand = "";
             foreach (var item in advertDBList)
             {
-                if (!advertWebList.Contains(item))
+                if (!advertWebList.Contains(item.AdvertID))
                 {
-                    if (string.IsNullOrEmpty(SQLCommand))
-                        SQLCommand = "UPDATE TABLE_ADVERT SET ISDELETED = 1 WHERE ADVERTID IN (";
-                    SQLCommand += item.ToString() + ", ";
+                    var filter = Builders<BsonDocument>.Filter.Eq("_id", item._id);
+                    var update = Builders<BsonDocument>.Update.Set("IsDeleted", 52000);
+                    Collection.UpdateOne(filter, update);
                 }
             }
-            if (!string.IsNullOrEmpty(SQLCommand))
-                SQLClass.GetDataTable(SQLCommand + "0)");
         }
 
         public List<string> SplitDivisionHelper(DivisionCriteria SDC, string Input, bool IsRemoveDivision)
