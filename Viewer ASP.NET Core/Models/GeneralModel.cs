@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MongoDB.Bson;
+using System;
 using System.Data;
 
 namespace Viewer_ASP.NET_Core.Models
@@ -52,6 +53,26 @@ namespace Viewer_ASP.NET_Core.Models
             public int Size { get; set; }
             public string Room { get; set; }
             public string Heating { get; set; }
+        }
+
+        public class AdvertModelMongoDB
+        {
+#pragma warning disable IDE1006 // Naming Styles
+            public ObjectId _id { get; set; }
+#pragma warning restore IDE1006 // Naming Styles
+            public int Price { get; set; }
+            public string Location { get; set; }
+            public int AdvertID { get; set; }
+            public string Description { get; set; }
+            public string ThumbnailLink { get; set; }
+            public DateTime AdvertDate { get; set; }
+            public DateTime CreateDate { get; set; }
+            public int SearchID { get; set; }
+            public int Size { get; set; }
+            public string Room { get; set; }
+            public string Heating { get; set; }
+            public bool IsSeen { get; set; }
+            public bool IsDeleted { get; set; }
         }
     }
 }

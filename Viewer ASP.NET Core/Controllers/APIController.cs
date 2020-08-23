@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
@@ -9,18 +11,36 @@ using System.Web;
 using DataAccessLayer;
 using Microsoft.AspNetCore.Mvc;
 using static Viewer_ASP.NET_Core.Models.GeneralModel;
+using MongoDB.Bson.Serialization;
 
 namespace Viewer_ASP.NET_Core.Controllers
 {
     public class APIController : Controller
     {
-        [HttpGet]
-        public IEnumerable<AdvertModel> FillDataToScreen([FromQuery] int SearchMasterID)
+        MongoClient dbClient;
+        IMongoDatabase db;
+
+        public APIController()
         {
+            dbClient = new MongoClient("mongodb+srv://sahibindendbadmin:6yHN_mongodb_7uJM@cluster0.hbpwq.azure.mongodb.net/test");
+            db = dbClient.GetDatabase("SahibindenMongoDatabase");
+        }
+
+        [HttpGet]
+        public IEnumerable<AdvertModel> FillDataToScreen()
+        {
+            IMongoCollection<BsonDocument> advertCollection = db.GetCollection<BsonDocument>("AdvertCollection");
             List<AdvertModel> result_ = new List<AdvertModel>();
-            GeneralClass cls = new GeneralClass();
-            IEnumerable<TABLE_ADVERT> Adverts = cls.GetAdvertData(SearchMasterID);
-            foreach (var advert in Adverts)
+            var builder = Builders<BsonDocument>.Filter;
+            var filter = builder.Eq("IsDeleted", false);
+            var list_ = advertCollection.Find(filter).ToList();
+            List<AdvertModelMongoDB> resultDB_ = new List<AdvertModelMongoDB>();
+            foreach (var item in list_)
+            {
+                AdvertModelMongoDB temp = BsonSerializer.Deserialize<AdvertModelMongoDB>(item);
+                resultDB_.Add(temp);
+            }
+            foreach (var advert in resultDB_)
             {
                 AdvertModel x = new AdvertModel
                 {
@@ -34,7 +54,7 @@ namespace Viewer_ASP.NET_Core.Controllers
                     Room = advert.Room,
                     Heating = advert.Heating,
                     Price_sort = advert.Price,
-                    SearchMasterID = advert.SearchMasterID,
+                    SearchMasterID = advert.SearchID,
                     Date_sort = advert.AdvertDate.Ticks
                 };
                 result_.Add(x);
@@ -43,19 +63,28 @@ namespace Viewer_ASP.NET_Core.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<SearchMasterModel> FillSearchComboData()
+        public IEnumerable<SearchModel> FillSearchComboData()
         {
-            List<SearchMasterModel> result_ = new List<SearchMasterModel>();
-            GeneralClass cls = new GeneralClass();
-            IEnumerable<VIEW_SEARCHMASTER> SearchMasters = cls.GetSearchMasterData();
-            foreach (var searchMaster in SearchMasters)
+            List<SearchModel> result_ = new List<SearchModel>();
+            IMongoCollection<BsonDocument> searchCollection = db.GetCollection<BsonDocument>("SearchCollection");
+            List<SearchModel> resultDB_ = new List<SearchModel>();
+            var builder = Builders<BsonDocument>.Filter;
+            FilterDefinition<BsonDocument> filter = builder.Gt("SearchID", 0);
+            var project_ = Builders<BsonDocument>.Projection.Include("SearchID");
+            project_ = project_.Include("Description");
+            project_ = project_.Exclude("_id");
+            var list_ = searchCollection.Find(filter).Project(project_).ToList();
+            foreach (var item in list_)
             {
-                SearchMasterModel x = new SearchMasterModel
+                SearchModel temp = BsonSerializer.Deserialize<SearchModel>(item);
+                resultDB_.Add(temp);
+            }
+            foreach (var search in resultDB_)
+            {
+                SearchModel x = new SearchModel
                 {
-                    ID = searchMaster.ID,
-                    Description = searchMaster.Description,
-                    Notes = searchMaster.Notes,
-                    RecordCount = Convert.ToInt32(searchMaster.RecordCount)
+                    SearchID = search.SearchID,
+                    Description = search.Description
                 };
                 result_.Add(x);
             }

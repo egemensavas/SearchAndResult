@@ -13,7 +13,7 @@
       <div class="col-sm-5">
         <select name="searchCriterias" class="custom-select stylingforcellfont" (change)="onChangeEvent($event)">
           <option value="0" selected>Search Criteria Selection</option>
-          <option value="{{ searchMaster.id }}" *ngFor="let searchMaster of SearchMasters">{{ searchMaster.description }} ({{ searchMaster.recordCount }})</option>
+          <option value="{{ search.searchID }}" *ngFor="let search of SearchList">{{ search.description }}</option>
         </select>
       </div>
       <div class="col-sm-2">

@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { DataService } from '../data.service';
 
 @Component({
@@ -10,7 +10,7 @@ export class HomeComponent implements OnInit {
   public Adverts: AdvertModel[];
   public filteredAdverts: AdvertModel[];
   public paginatedAdverts: AdvertModel[];
-  public SearchMasters: SearchMasterModel[];
+  public SearchList: SearchModel[];
   public paginateBase = [] as Array<PaginateModel>
   public paginateShow = [] as Array<PaginateModel>
   sortType: string;
@@ -112,13 +112,13 @@ export class HomeComponent implements OnInit {
   fillSearchMasterData() {
     this.dataService.sendGetRequest("API/FillSearchComboData").subscribe((data: any[]) => {
       console.log(data);
-      this.SearchMasters = data;
-      this.sortSearchMasters("description");
+      this.SearchList = data;
+      this.sortSearchList("description");
     })
   }
 
   fillAdvertData() {
-    this.dataService.sendGetRequest("API/FillDataToScreen?SearchMasterID=0").subscribe((data: any[]) => {
+    this.dataService.sendGetRequest("API/FillDataToScreen").subscribe((data: any[]) => {
       console.log(data);
       this.Adverts = data;
       this.filteredAdverts = this.Adverts;
@@ -142,10 +142,10 @@ export class HomeComponent implements OnInit {
     this.doPaginate()
   }
 
-  sortSearchMasters(property) {
+  sortSearchList(property) {
     this.sortType = property;
     this.sortReverse = !this.sortReverse;
-    this.SearchMasters.sort(this.dynamicSort(property));
+    this.SearchList.sort(this.dynamicSort(property));
   }
 
   dynamicSort(property) {
@@ -208,11 +208,9 @@ interface AdvertModel {
   Date_sort: number;
 }
 
-interface SearchMasterModel {
-  ID: number;
+interface SearchModel {
+  SearchID: number;
   Description: string;
-  Notes: string;
-  RecordCount: number;
 }
 
 interface OnInit {

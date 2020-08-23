@@ -23,11 +23,9 @@ namespace Viewer_ASP.NET_Core
         public long Date_sort { get; set; }
     }
 
-    public class SearchMasterModel
+    public class SearchModel
     {
-        public int ID { get; set; }
+        public int SearchID { get; set; }
         public string Description { get; set; }
-        public string Notes { get; set; }
-        public int RecordCount { get; set; }
 }
 }
